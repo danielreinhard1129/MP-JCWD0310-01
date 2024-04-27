@@ -10,15 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Sample {
-//   id        Int      @id @default(autoincrement())
-//   name      String
-//   code      String   @unique
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   @@map("samples") // if you want to use snake_case format
-// }
 model User {
   id         Int       @id @default(autoincrement())
   username   String
@@ -92,7 +83,7 @@ model TicketType {
   expiredDate DateTime?
 
   eventId           Int
-  event             Event               @relation(fields: [eventId], references: [id])
+  event             Event              @relation(fields: [eventId], references: [id])
   TransactionDetail TransactionDetail?
 
   @@map("ticket_types")
@@ -147,8 +138,9 @@ model UserVoucher {
   voucherId Int
   userId    Int
 
-  user    User    @relation(fields: [userId], references: [id])
-  voucher Voucher @relation(fields: [voucherId], references: [id])
+  user              User                @relation(fields: [userId], references: [id])
+  voucher           Voucher             @relation(fields: [voucherId], references: [id])
+  TransactionDetail TransactionDetail?
 
   @@map("user_voucher")
 }
@@ -158,8 +150,9 @@ model EventVoucher {
   voucherId Int
   eventId   Int
 
-  voucher Voucher @relation(fields: [voucherId], references: [id])
-  event   Event   @relation(fields: [eventId], references: [id])
+  voucher           Voucher             @relation(fields: [voucherId], references: [id])
+  event             Event               @relation(fields: [eventId], references: [id])
+  TransactionDetail TransactionDetail?
 
   @@map("event_voucher")
 }
@@ -171,7 +164,8 @@ model Point {
   expiredDate DateTime
   userId      Int      @unique
 
-  user User @relation(fields: [userId], references: [id])
+  user              User                @relation(fields: [userId], references: [id])
+  TransactionDetail TransactionDetail?
 
   @@map("points")
 }
@@ -206,8 +200,8 @@ model Transaction {
   userId    Int               @unique
   eventId   Int               @unique
 
-  user              User                @relation(fields: [userId], references: [id])
-  event             Event               @relation(fields: [eventId], references: [id])
+  user              User               @relation(fields: [userId], references: [id])
+  event             Event              @relation(fields: [eventId], references: [id])
   TransactionDetail TransactionDetail?
 
   @@map("transactions")
@@ -221,14 +215,20 @@ enum StatusTransaction {
 }
 
 model TransactionDetail {
-  id            Int      @id @default(autoincrement())
-  createdAt     DateTime @default(now())
-  qty           Int
-  transactionId Int      @unique
-  ticketTypeId  Int      @unique
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  qty            Int
+  transactionId  Int      @unique
+  ticketTypeId   Int      @unique
+  eventVoucherId Int  @unique
+  userVoucherId  Int @unique
+  pointId        Int  @unique
 
-  transaction Transaction @relation(fields: [transactionId], references: [id])
-  ticketType  TicketType  @relation(fields: [ticketTypeId], references: [id])
+  transaction  Transaction  @relation(fields: [transactionId], references: [id])
+  ticketType   TicketType   @relation(fields: [ticketTypeId], references: [id])
+  eventVoucher EventVoucher @relation(fields: [eventVoucherId], references: [id])
+  userVoucher  UserVoucher  @relation(fields: [userVoucherId], references: [id])
+  point        Point        @relation(fields: [pointId], references: [id])
 
   @@map("transaction_detail")
 }
