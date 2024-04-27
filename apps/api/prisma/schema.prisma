@@ -220,15 +220,15 @@ model TransactionDetail {
   qty            Int
   transactionId  Int      @unique
   ticketTypeId   Int      @unique
-  eventVoucherId Int  @unique
-  userVoucherId  Int @unique
-  pointId        Int  @unique
+  eventVoucherId Int?  @unique
+  userVoucherId  Int? @unique
+  pointId        Int?  @unique
 
   transaction  Transaction  @relation(fields: [transactionId], references: [id])
   ticketType   TicketType   @relation(fields: [ticketTypeId], references: [id])
-  eventVoucher EventVoucher @relation(fields: [eventVoucherId], references: [id])
-  userVoucher  UserVoucher  @relation(fields: [userVoucherId], references: [id])
-  point        Point        @relation(fields: [pointId], references: [id])
+  eventVoucher EventVoucher? @relation(fields: [eventVoucherId], references: [id])
+  userVoucher  UserVoucher?  @relation(fields: [userVoucherId], references: [id])
+  point        Point?        @relation(fields: [pointId], references: [id])
 
   @@map("transaction_detail")
 }
