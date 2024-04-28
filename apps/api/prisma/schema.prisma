@@ -10,6 +10,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Sample {
+  id        Int      @id @default(autoincrement())
+  name      String
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("samples") // if you want to use snake_case format
+}
+
 model User {
   id         Int       @id @default(autoincrement())
   username   String
@@ -25,8 +35,8 @@ model User {
   Event       Event[]
   UserVoucher UserVoucher[]
   Point       Point?
-  Review      Review?
-  Transaction Transaction?
+  Review      Review[]
+  Transaction Transaction[]
 
   @@map("users") // if you want to use snake_case format
 }
@@ -98,12 +108,12 @@ model Event {
   limit       Int
   booked      Int
 
-  locationId Int
-  userId     Int
-  categoryId Int
+  locationId  Int
+  organizerId Int
+  categoryId  Int
 
   location     Location       @relation(fields: [locationId], references: [id])
-  user         User           @relation(fields: [userId], references: [id])
+  organizer    User           @relation(fields: [organizerId], references: [id])
   category     Category       @relation(fields: [categoryId], references: [id])
   TicketType   TicketType[]
   EventVoucher EventVoucher[]
@@ -116,7 +126,7 @@ model Event {
 model Voucher {
   id            Int            @id @default(autoincrement())
   title         String
-  discountValue Int
+  discountValue Float
   voucherType   VoucherType    @default(REWARDS)
   createdAt     DateTime       @default(now())
   expiredDate   DateTime
@@ -138,8 +148,8 @@ model UserVoucher {
   voucherId Int
   userId    Int
 
-  user              User                @relation(fields: [userId], references: [id])
-  voucher           Voucher             @relation(fields: [voucherId], references: [id])
+  user              User               @relation(fields: [userId], references: [id])
+  voucher           Voucher            @relation(fields: [voucherId], references: [id])
   TransactionDetail TransactionDetail?
 
   @@map("user_voucher")
@@ -150,8 +160,8 @@ model EventVoucher {
   voucherId Int
   eventId   Int
 
-  voucher           Voucher             @relation(fields: [voucherId], references: [id])
-  event             Event               @relation(fields: [eventId], references: [id])
+  voucher           Voucher            @relation(fields: [voucherId], references: [id])
+  event             Event              @relation(fields: [eventId], references: [id])
   TransactionDetail TransactionDetail?
 
   @@map("event_voucher")
@@ -164,7 +174,7 @@ model Point {
   expiredDate DateTime
   userId      Int      @unique
 
-  user              User                @relation(fields: [userId], references: [id])
+  user              User               @relation(fields: [userId], references: [id])
   TransactionDetail TransactionDetail?
 
   @@map("points")
@@ -174,7 +184,7 @@ model Review {
   id         Int          @id @default(autoincrement())
   rating     RatingReview
   reviewText String?      @db.LongText
-  userId     Int          @unique
+  userId     Int
   eventId    Int          @unique
 
   user  User  @relation(fields: [userId], references: [id])
@@ -197,7 +207,7 @@ model Transaction {
   updatedAt DateTime          @updatedAt
   status    StatusTransaction @default(PENDING)
   total     Int
-  userId    Int               @unique
+  userId    Int
   eventId   Int               @unique
 
   user              User               @relation(fields: [userId], references: [id])
@@ -220,12 +230,12 @@ model TransactionDetail {
   qty            Int
   transactionId  Int      @unique
   ticketTypeId   Int      @unique
-  eventVoucherId Int?  @unique
-  userVoucherId  Int? @unique
-  pointId        Int?  @unique
+  eventVoucherId Int?     @unique
+  userVoucherId  Int?     @unique
+  pointId        Int?     @unique
 
-  transaction  Transaction  @relation(fields: [transactionId], references: [id])
-  ticketType   TicketType   @relation(fields: [ticketTypeId], references: [id])
+  transaction  Transaction   @relation(fields: [transactionId], references: [id])
+  ticketType   TicketType    @relation(fields: [ticketTypeId], references: [id])
   eventVoucher EventVoucher? @relation(fields: [eventVoucherId], references: [id])
   userVoucher  UserVoucher?  @relation(fields: [userVoucherId], references: [id])
   point        Point?        @relation(fields: [pointId], references: [id])
