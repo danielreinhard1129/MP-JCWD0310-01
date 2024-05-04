@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 
 export const validateRegisterInput = [
-  body('username').notEmpty().withMessage('Name is required.'),
+  body('fullName').notEmpty().withMessage('Name is required.'),
   body('email').notEmpty().withMessage('Email is required.'),
   body('password')
     .notEmpty()

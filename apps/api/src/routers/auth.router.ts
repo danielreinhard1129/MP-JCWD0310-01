@@ -1,6 +1,8 @@
 import { AuthController } from '@/controllers/auth.controller';
+import { validateForgotPassword } from '@/middlewares/forgot-password.validator';
 import { validateLoginInput } from '@/middlewares/login.validator';
 import { validateRegisterInput } from '@/middlewares/register.validator';
+import { validateResetPassword } from '@/middlewares/reset-password.validator';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
@@ -29,6 +31,17 @@ export class AuthRouter {
       '/login',
       validateLoginInput,
       this.authController.loginController,
+    );
+    this.router.post(
+      '/forgot-password',
+      validateForgotPassword,
+      this.authController.forgotPasswordController,
+    );
+    this.router.patch(
+      '/reset-password',
+      validateResetPassword,
+      verifyToken,
+      this.authController.resetPasswordController,
     );
   }
 

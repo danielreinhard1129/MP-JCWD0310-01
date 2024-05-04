@@ -2,7 +2,7 @@ import { hashPassword } from '@/lib/bcrypt';
 import prisma from '@/prisma';
 import { User } from '@prisma/client';
 
-interface IRegisterArgs extends Pick<User, 'email' | 'username' | 'password'> {}
+interface IRegisterArgs extends Pick<User, 'email' | 'fullName' | 'password'> {}
 
 export const registerService = async (body: IRegisterArgs) => {
   try {
