@@ -1,0 +1,29 @@
+'use client';
+
+import { axiosInstance } from '@/lib/axios';
+import { useAppDispatch } from '@/redux/hooks';
+import { loginAction } from '@/redux/slices/userSlice';
+import { IUser } from '@/types/user.type';
+
+interface KeepLoginResponse {
+  message: string;
+  data: IUser;
+}
+
+const useKeepLogin = () => {
+  const dispatch = useAppDispatch();
+
+  const keepLogin = async () => {
+    try {
+      const { data } =
+        await axiosInstance.get<KeepLoginResponse>('/auth/keep-login');
+      dispatch(loginAction(data.data));
+    } catch (error) {
+      // console.log(error);
+
+    }
+  };
+  return { keepLogin };
+};
+
+export default useKeepLogin;
