@@ -11,6 +11,19 @@ module.exports = {
     },
     extend: {
       colors: {
+        marine: {
+          '50': '#f1f1ff',
+          '100': '#e5e5ff',
+          '200': '#cfd0ff',
+          '300': '#a9a8ff',
+          '400': '#7f77ff',
+          '500': '#5640ff',
+          '600': '#421aff',
+          '700': '#3108f9',
+          '800': '#2906d1',
+          '900': '#2408aa',
+          '950': '#14018e',
+      },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

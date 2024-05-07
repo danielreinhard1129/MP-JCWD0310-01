@@ -35,7 +35,7 @@ import {
           </div>
   
           <div className="mb-4 lg:mb-0">
-            <p>&copy; 2024 EventOr. All rights reserved.</p>
+            <p>&copy; 2024 Eventour. All rights reserved.</p>
           </div>
   
           {/* Menu Drawer */}
