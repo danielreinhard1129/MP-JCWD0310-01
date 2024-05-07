@@ -2,12 +2,7 @@
 
 import FormInput from "@/components/FormInput";
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useLogin from "@/hooks/api/auth/useLogin";
 import { useFormik } from "formik";
 import React from "react";
@@ -15,10 +10,8 @@ import { LoginValidationSchema } from "./schemas/LoginValidationSchema";
 import { useRouter } from "next/navigation";
 
 const Login: React.FC = () => {
-  
-  const {login} = useLogin()
-;
-    const router = useRouter()
+  const { login } = useLogin();
+  const router = useRouter();
   const { handleBlur, handleChange, handleSubmit, errors, values, touched } =
     useFormik({
       initialValues: {
@@ -26,10 +19,8 @@ const Login: React.FC = () => {
         password: "",
       },
       validationSchema: LoginValidationSchema,
-      onSubmit:  (values) => {
-       login(values)
-       
-        
+      onSubmit: (values) => {
+        login(values);
       },
     });
 
@@ -66,7 +57,12 @@ const Login: React.FC = () => {
                   type="password"
                   value={values.password}
                 />
-                <p onClick={()=>router.push("/forgot-password")} className="underline text-sm">Forgot password?</p>
+                <p
+                  onClick={() => router.push("/forgot-password")}
+                  className="cursor-pointer text-xs underline"
+                >
+                  Forgot password?
+                </p>
                 <Button type="submit" className=" mt-6 w-full text-white">
                   Login
                 </Button>
