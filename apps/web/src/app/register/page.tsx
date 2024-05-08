@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import FormInput from '@/components/FormInput';
-import { Button } from '@/components/ui/button';
+import FormInput from "@/components/FormInput";
+import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import useRegister from '@/hooks/api/auth/useRegister';
-import { useFormik } from 'formik';
-import { RegisterValidationSchema } from './schemas/RegisterValidationSchema';
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import useRegister from "@/hooks/api/auth/useRegister";
+import { useFormik } from "formik";
+import { RegisterValidationSchema } from "./schemas/RegisterValidationSchema";
 
 const Register: React.FC = () => {
   const { register } = useRegister();
@@ -20,26 +20,25 @@ const Register: React.FC = () => {
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
     useFormik({
       initialValues: {
-        fullName: '',
-        email: '',
-        password: '',
+        fullName: "",
+        email: "",
+        password: "",
+        referral: "",
       },
       validationSchema: RegisterValidationSchema,
       onSubmit: (values) => {
         register(values);
       },
     });
-    console.log("============",errors);
-    
+  console.log("============", errors);
+
   return (
     <main className="container mx-auto px-4">
       <div className="mt-16 flex justify-center">
         <Card className="w-[350px] ">
           <CardHeader className="space-y-4">
             <CardTitle className="text-center text-2xl ">Sign-Up!</CardTitle>
-            <CardDescription>
-              Sign-up and and start writing!{' '}
-            </CardDescription>
+            <CardDescription>Sign-up and and start writing! </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit}>
@@ -78,6 +77,18 @@ const Register: React.FC = () => {
                   type="password"
                   value={values.password}
                   label="Password"
+                />
+
+                <FormInput
+                  name="referral"
+                  error={errors.referral}
+                  isError={!!touched.referral && !!errors.referral}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  placeholder="Referral code"
+                  type="text"
+                  value={values.referral}
+                  label="Referral code (optional)"
                 />
 
                 <Button type="submit" className=" mt-6 w-full text-white">
