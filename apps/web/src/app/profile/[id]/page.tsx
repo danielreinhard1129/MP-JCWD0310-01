@@ -1,5 +1,6 @@
 "use client";
 import FormInput from "@/components/FormInput";
+import AuthGuardCustomer from "@/hoc/AuthGuardCustomer";
 import useGetUserById from "@/hooks/api/users/useGetUser";
 import { IUserDetail } from "@/types/user.type";
 import { useFormik } from "formik";
@@ -103,4 +104,4 @@ const ProfileDetail: FC<ProfileDetailProps> = ({ params }) => {
   );
 };
 
-export default ProfileDetail;
+export default AuthGuardCustomer(ProfileDetail);

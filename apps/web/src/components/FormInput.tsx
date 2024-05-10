@@ -13,7 +13,7 @@ interface FormInputProps {
   isError: boolean;
   error: string | undefined;
   label: string;
-  disabled: boolean
+  disabled?: boolean
 }
 
 const FormInput: React.FC<FormInputProps> = ({

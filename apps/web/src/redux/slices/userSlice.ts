@@ -16,7 +16,7 @@ export const userSlice = createSlice({
       state.id = action.payload.id;
       state.email = action.payload.email;
       state.fullName = action.payload.fullName;
-      state.fullName = action.payload.role
+      state.role = action.payload.role
     },
 
     logoutAction: (state) => {

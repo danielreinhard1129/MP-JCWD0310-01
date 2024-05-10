@@ -1,4 +1,5 @@
 "use client";
+import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
 import { useState } from "react";
 
 const CreateEventPage = () => {
@@ -173,4 +174,4 @@ const CreateEventPage = () => {
   );
 };
 
-export default CreateEventPage;
+export default AuthGuardOrganizer(CreateEventPage);

@@ -10,12 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import useRegister from "@/hooks/api/auth/useRegister";
+import useRegisterOrganizer from "@/hooks/api/auth/useRegisterOrganizer";
 import { useFormik } from "formik";
-import { RegisterValidationSchema } from "./schemas/RegisterValidationSchema";
+import { RegisterOrganizerValidationSchema } from "./schemas/RegisterValidationSchema";
 
-const Register: React.FC = () => {
-  const { register } = useRegister();
+const RegisterOrganizer: React.FC = () => {
+  const { register } = useRegisterOrganizer();
 
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
     useFormik({
@@ -23,14 +23,14 @@ const Register: React.FC = () => {
         fullName: "",
         email: "",
         password: "",
-        referral: "",
+        
       },
-      validationSchema: RegisterValidationSchema,
+      validationSchema: RegisterOrganizerValidationSchema,
       onSubmit: (values) => {
         register(values);
       },
     });
-  console.log("============", errors);
+  
 
   return (
     <main className="container mx-auto px-4">
@@ -38,7 +38,7 @@ const Register: React.FC = () => {
         <Card className="w-[350px] ">
           <CardHeader className="space-y-4">
             <CardTitle className="text-center text-2xl ">Sign-Up!</CardTitle>
-            <CardDescription>Sign-up and and start enjoying the show! </CardDescription>
+            <CardDescription>Sign-up as an organizer and create your own event! </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit}>
@@ -79,17 +79,6 @@ const Register: React.FC = () => {
                   label="Password"
                 />
 
-                <FormInput
-                  name="referral"
-                  error={errors.referral}
-                  isError={!!touched.referral && !!errors.referral}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  placeholder="Referral code"
-                  type="text"
-                  value={values.referral}
-                  label="Referral code (optional)"
-                />
 
                 <Button type="submit" className=" mt-6 w-full text-white">
                   Register
@@ -106,4 +95,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default RegisterOrganizer;
