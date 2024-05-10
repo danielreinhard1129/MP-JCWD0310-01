@@ -24,7 +24,7 @@ export class AuthRouter {
     );
     this.router.post(
       '/register',
-      validateRegisterInput,
+      // validateRegisterInput,
       this.authController.registerController,
     );
     this.router.post(

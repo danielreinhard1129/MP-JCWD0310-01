@@ -25,22 +25,34 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { logoutAction } from "@/redux/slices/userSlice";
 
 const Header: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Toggle login state
-  const toggleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
+  const {id} = useAppSelector((state)=>state.user)
+
+  const dispatch = useAppDispatch()
+
+  const logout =  () => {
+    localStorage.removeItem("token");
+    dispatch(logoutAction());
   };
 
-  const isLoggedOut = !isLoggedIn;
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    // Logic to determine if user is logged in or not
-    // For demonstration purposes, I'm assuming user is logged out initially
-    setIsLoggedIn(false);
-  }, []);
+  // // Toggle login state
+  // const toggleLogin = () => {
+  //   setIsLoggedIn(!isLoggedIn);
+  // };
+
+  // const isLoggedOut = !isLoggedIn;
+
+  // useEffect(() => {
+  //   // Logic to determine if user is logged in or not
+  //   // For demonstration purposes, I'm assuming user is logged out initially
+  //   setIsLoggedIn(false);
+  // }, []);
 
   const SHEET_SIDES = ["top"] as const;
   type SheetSide = (typeof SHEET_SIDES)[number];
@@ -84,17 +96,17 @@ const Header: React.FC = () => {
                   <Link href="/">Event Discover</Link>
                 </Badge>
 
-                {isLoggedOut ? (
+                {!Boolean(id) ? (
                   <div>
                     <Button
-                      onClick={toggleLogin}
+                      // onClick={toggleLogin}
                       variant="ghost"
                       className="mx-1 text-white"
                     >
                       <Link href="/login">Login</Link>
                     </Button>
                     <Button
-                      onClick={toggleLogin}
+                      // onClick={toggleLogin}
                       variant="ghost"
                       className="mx-1 text-white"
                     >
@@ -105,7 +117,7 @@ const Header: React.FC = () => {
                   <div>
                     {/* Tampilkan tombol logout */}
                     <Button
-                      onClick={toggleLogin}
+                      onClick={logout}
                       variant="ghost"
                       className="mx-1  text-white"
                     >
@@ -149,7 +161,7 @@ const Header: React.FC = () => {
             </div>
             <div className="sm:block lg:hidden">
               {/* Mobile navigation */}
-              {isLoggedOut ? (
+              {!Boolean(id) ? (
                 <Sheet>
                   <SheetTrigger asChild>
                     <RxHamburgerMenu className="size-7" />
@@ -166,7 +178,7 @@ const Header: React.FC = () => {
                       <div className="flex items-end justify-center gap-3">
                         <SheetClose asChild>
                           <Button
-                            onClick={toggleLogin}
+                            // onClick={toggleLogin}
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
@@ -175,7 +187,7 @@ const Header: React.FC = () => {
                         </SheetClose>
                         <SheetClose asChild>
                           <Button
-                            onClick={toggleLogin}
+                            // onClick={toggleLogin}
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
@@ -241,7 +253,7 @@ const Header: React.FC = () => {
                       <SheetFooter>
                       <SheetClose asChild>
                         <Button
-                          onClick={toggleLogin}
+                          onClick={logout}
                           variant="ghost"
                           className="justify-normal"
                         >

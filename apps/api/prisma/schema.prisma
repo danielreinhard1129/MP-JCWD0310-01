@@ -48,10 +48,10 @@ enum RoleUser {
 
 model UserDetail {
   id          Int              @id @default(autoincrement())
-  phoneNumber String
-  firstName   String
-  lastName    String
-  referral    String           @unique
+  phoneNumber String?
+  firstName   String?
+  lastName    String?
+  referral    String ?          @unique
   userId      Int              @unique
   gender      GenderUserDetail @default(MALE)
 
@@ -126,7 +126,7 @@ model Event {
 model Voucher {
   id            Int            @id @default(autoincrement())
   title         String
-  discountValue Float
+  discountValue Int
   voucherType   VoucherType    @default(REWARDS)
   createdAt     DateTime       @default(now())
   expiredDate   DateTime

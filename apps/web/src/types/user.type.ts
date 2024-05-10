@@ -4,3 +4,11 @@ export interface IUser {
   fullName: string;
   role: string;
 }
+
+export interface IUserDetail {
+  id: number;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  gender: string;
+}
