@@ -28,6 +28,11 @@ export class AuthRouter {
       this.authController.registerController,
     );
     this.router.post(
+      '/register-organizer',
+      // validateRegisterInput,
+      this.authController.registerOrganizerController,
+    );
+    this.router.post(
       '/login',
       validateLoginInput,
       this.authController.loginController,
