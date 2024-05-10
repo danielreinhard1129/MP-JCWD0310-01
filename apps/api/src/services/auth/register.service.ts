@@ -79,13 +79,24 @@ export const registerService = async (body: IRegisterArgs) => {
       }
 
       if (existingReferral) {
-        await prisma.point.update({
+        const userPoint = await prisma.point.findFirst({
           where: { userId: existingReferral.userId },
-          data: {
-            totalPoints: { increment: 10000 },
-            expiredDate: newExpiredDate,
-          },
         });
+
+        if (new Date() < userPoint?.expiredDate!) {
+          await prisma.point.update({
+            where: { userId: existingReferral.userId },
+            data: {
+              totalPoints: { increment: 10000 },
+              expiredDate: newExpiredDate,
+            },
+          });
+        } else {
+          await prisma.point.update({
+            where: { userId: existingReferral.userId },
+            data: { totalPoints: 10000, expiredDate: newExpiredDate },
+          });
+        }
       }
       if (existingReferral) {
         if (referralDiscount) {
