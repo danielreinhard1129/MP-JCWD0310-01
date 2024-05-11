@@ -1,30 +1,36 @@
-"use client";
+'use client';
 
-import { axiosInstance } from "@/lib/axios";
-import { IUserDetail } from "@/types/user.type";
-import { AxiosError } from "axios";
-import { useEffect } from "react";
-import { toast } from "sonner";
+import { axiosInstance } from '@/lib/axios';
+import { IUser, IUserDetail } from '@/types/user.type';
+import { appConfig } from '@/utils/config';
+import axios, { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
-interface IGetUserResponse {
-    message: string;
-    data: IUserDetail;
-  }
-const useGetUserById = () => {
-  const getUserById = async (id:number):Promise<IGetUserResponse|undefined> => {
+const useGetUser = (id: number) => {
+  const [data, setData] = useState<IUserDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const {baseURL}  = appConfig
+
+  const getUser = async () => {
     try {
-      const { data } = await axiosInstance.get(`/users/${id}`);
+      const { data } = await axiosInstance.get(baseURL+`/users/${id}`);
 
-      return data
+      setData(data.data);
     } catch (error) {
-      console.log(error);
       if (error instanceof AxiosError) {
+        console.log(error);
+
         toast.error(error?.response?.data);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
-  useEffect(()=>{getUserById},[])
-  return { getUserById };
-};
+  useEffect(() => {
 
-export default useGetUserById;
+    getUser();
+  }, []);
+  return { user: data, isLoading, refetch: getUser };
+};
+export default useGetUser;

@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-interface IRegisterArgs extends Omit<IUser, "id" | "role"> {
+interface IRegisterArgs extends Pick<IUser, "email" | "fullName"> {
   password: string;
   referral: string;
 }

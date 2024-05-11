@@ -35,7 +35,7 @@ const Register: React.FC = () => {
   return (
     <main className="container mx-auto px-4">
       <div className="mt-16 flex justify-center">
-        <Card className="w-[350px] ">
+        <Card className="w-[350px] shadow-xl">
           <CardHeader className="space-y-4">
             <CardTitle className="text-center text-2xl ">Sign-Up!</CardTitle>
             <CardDescription>Sign-up and and start enjoying the show! </CardDescription>
