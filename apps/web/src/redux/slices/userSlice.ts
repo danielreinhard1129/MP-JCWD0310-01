@@ -1,7 +1,7 @@
 import { IUser } from "@/types/user.type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState: IUser = {
+const initialState: Pick<IUser, "id"| "fullName" |"email"|"role"> = {
   id: 0,
   fullName: "",
   email: "",

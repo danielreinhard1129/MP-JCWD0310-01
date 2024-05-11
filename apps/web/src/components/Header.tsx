@@ -58,8 +58,8 @@ const Header: React.FC = () => {
   type SheetSide = (typeof SHEET_SIDES)[number];
 
   return (
-    <div className="header">
-      <div className="container mx-auto bg-marine-800">
+    <div className="header  bg-marine-800">
+      <div className="container mx-auto ">
         <div className="flex items-center justify-between py-3 lg:px-4">
           <div className="item-center flex justify-between gap-10">
             <Link href="/">

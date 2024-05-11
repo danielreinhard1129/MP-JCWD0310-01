@@ -1,59 +1,50 @@
 "use client";
 import FormInput from "@/components/FormInput";
 import AuthGuardCustomer from "@/hoc/AuthGuardCustomer";
+import useGetUser from "@/hooks/api/users/useGetUser";
 import useGetUserById from "@/hooks/api/users/useGetUser";
+import { useAppSelector } from "@/redux/hooks";
 import { IUserDetail } from "@/types/user.type";
 import { useFormik } from "formik";
-import {
-    FC,
-    useEffect,
-    useState
-} from "react";
+import { notFound } from "next/navigation";
+import { FC, useEffect, useState } from "react";
 
-interface ProfileDetailProps {
-  params: {
-    id: string;
-  };
-}
+const ProfileDetail = ({ params }: { params: { id: string } }) => {
+  const { id } = useAppSelector((state) => state.user);
+  const { user, isLoading } = useGetUser(Number(params.id));
 
-const ProfileDetail: FC<ProfileDetailProps> = ({ params }) => {
+  console.log(user);
 
-  const { getUserById } = useGetUserById();
-  const [user, setUser] = useState<IUserDetail>();
+  // if (!user) {
+  //   return notFound();
+  // }
 
+  // console.log(user);
+  // console.log();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await getUserById(Number(params.id));
+  const {
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    values,
+    touched,
+    initialValues,
+    setValues,
+  } = useFormik({
+    initialValues: {
+      firstName: user?.firstName,
+      lastName: user?.lastName || "",
+      gender: user?.gender || "",
+      phoneNumber: user?.phoneNumber || "",
+    },
+    //   validationSchema: LoginValidationSchema,
+    onSubmit: (values) => {},
+  });
+  // console.log(user?.firstName);
+  // console.log(initialValues.firstName);
+  console.log(values);
 
-        if(data){
-            setUser(data.data)
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchProfile()
-  },[params.id]);
-
-    // console.log(user);
-    // console.log();
-
-  const { handleBlur, handleChange, handleSubmit, errors, values, touched, initialValues, setValues} =
-    useFormik({
-      initialValues: {
-        firstName: '' ,
-        lastName: user?.lastName || "",
-        gender: user?.gender||"",
-        phoneNumber: user?.phoneNumber||"",
-      },
-      //   validationSchema: LoginValidationSchema,
-      onSubmit: (values) => {},
-    });
-    // console.log(user?.firstName);
-    // console.log(initialValues.firstName);
-    
   return (
     <main className="container mx-auto px-4">
       <form action="" onSubmit={handleSubmit}>
@@ -64,7 +55,7 @@ const ProfileDetail: FC<ProfileDetailProps> = ({ params }) => {
             label="First Name"
             placeholder=""
             // value={user?.firstName!}
-            value={user?.firstName!}
+            value={values.firstName!}
             error={errors.firstName}
             isError={!!touched.firstName && !!errors.firstName}
             onBlur={handleBlur}
@@ -83,7 +74,6 @@ const ProfileDetail: FC<ProfileDetailProps> = ({ params }) => {
             onBlur={handleBlur}
             onChange={handleChange}
             disabled={true}
-            
           />
           <FormInput
             name="phoneNumber"
