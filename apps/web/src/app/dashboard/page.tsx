@@ -75,43 +75,104 @@ const Dashboard = () => {
     ],
   };
   return (
-    <main className="container mx-auto">
-      <section className="my-8 grid grid-cols-5 gap-4 p-4 bg-zinc-100 bg-transparent rounded-lg shadow-inner">
-        <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-marine-50 shadow-xl">
-          <div className="flex h-full flex-col items-center justify-between gap-8 py-24 ">
-            <Button variant="ghost" className="w-full justify-center h-24 text-marine-800 hover:bg-white" >
-              <HomeIcon className="mr-2 h-6 w-6" />
-              Home
-            </Button>
-            <Button variant="ghost" className="w-full justify-center h-24 text-marine-800 hover:bg-white" >
-              <BarChart3 className="mr-2 h-6 w-6" />
-              Analytics
-            </Button>
-            <Button variant="ghost" className="w-full justify-center h-24 text-marine-800 hover:bg-white">
-              <Calendar className="mr-2 h-6 w-6" />
-              Events
-            </Button>
-            <Button variant="ghost" className="w-full justify-center h-24 text-marine-800 hover:bg-white">
-              <Contact className="mr-2 h-6 w-6" />
-              Profile
-            </Button>
-
-            
-          </div>
-        </div>
-        <div className="col-span-4 h-[1200px]">
-          <div className="h-full rounded-lg bg-marine-200 px-4 shadow-xl">
-            <div className="p-8 ">
-              <Line
-                options={options}
-                data={data}
-                className="rounded-2xl bg-white p-2 shadow-md"
-              />
+    <main className="md:container md:mx-auto">
+      {/* =============== DESKTOP ============== */}
+      <section className="hidden md:block">
+        <div className="my-8 grid grid-cols-5 gap-4 rounded-lg bg-transparent bg-zinc-100 p-4 shadow-inner">
+          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-marine-50 shadow-xl">
+            <div className="flex h-full flex-col items-center justify-between gap-8 py-24 ">
+              <Button
+                variant="ghost"
+                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+              >
+                <HomeIcon className="mr-2 h-6 w-6" />
+                Home
+              </Button>
+              <Button
+                variant="ghost"
+                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+              >
+                <BarChart3 className="mr-2 h-6 w-6" />
+                Analytics
+              </Button>
+              <Button
+                variant="ghost"
+                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+              >
+                <Calendar className="mr-2 h-6 w-6" />
+                Events
+              </Button>
+              <Button
+                variant="ghost"
+                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+              >
+                <Contact className="mr-2 h-6 w-6" />
+                Profile
+              </Button>
             </div>
-            <Separator className="my-8 h-0.5 bg-white" />
+          </div>
+          <div className="col-span-4 h-[1200px]">
+            <div className="h-full rounded-lg bg-marine-200 px-4 shadow-xl">
+              <div className="p-8 ">
+                <Line
+                  options={options}
+                  data={data}
+                  className="rounded-2xl bg-white p-2 shadow-md"
+                />
+              </div>
+              <Separator className="my-8 h-0.5 bg-white" />
+            </div>
           </div>
         </div>
       </section>
+      {/* ============ END DESKTOP ============= */}
+
+      {/* ===================== MOBILE ================== */}
+      <section className="block md:hidden">
+        <div className="mx-1 my-1 grid grid-cols-7 rounded-lg bg-transparent bg-zinc-100  shadow-inner">
+          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-marine-50 shadow-xl">
+            <div className="flex h-full flex-col items-center justify-between gap-4 py-48">
+              <Button
+                variant="ghost"
+                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+              >
+                <HomeIcon className="mr-2 h-6 w-6" />
+              </Button>
+              <Button
+                variant="ghost"
+                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+              >
+                <BarChart3 className="mr-2 h-6 w-6" />
+              </Button>
+              <Button
+                variant="ghost"
+                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+              >
+                <Calendar className="mr-2 h-6 w-6" />
+              </Button>
+              <Button
+                variant="ghost"
+                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+              >
+                <Contact className="mr-2 h-6 w-6" />
+              </Button>
+            </div>
+          </div>
+          <div className="col-span-6 h-[1200px]">
+            <div className="h-full rounded-lg bg-marine-200 px-4 shadow-xl">
+              <div className="min-h-full object-fill py-8  ">
+                <Line
+                  options={options}
+                  data={data}
+                  className="rounded-2xl bg-white p-1 shadow-md min-h-60"
+                />
+              <div  className="my-8 h-0.5 bg-white"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* ============= END MOBILE ===================== */}
     </main>
   );
 };
