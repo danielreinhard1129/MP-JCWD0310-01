@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-interface IRegisterArgs extends Omit<IUser, "id" | "role"> {
+interface IRegisterArgs extends Pick<IUser, "fullName" | "email"> {
   password: string;
 }
 
@@ -15,6 +15,7 @@ const useRegisterOrganizer = () => {
   const router = useRouter();
   const register = async (payload: IRegisterArgs) => {
     try {
+      
       const { baseURL } = appConfig;
       const { data } = await axiosInstance.post(
         baseURL + `/auth/register-organizer`,

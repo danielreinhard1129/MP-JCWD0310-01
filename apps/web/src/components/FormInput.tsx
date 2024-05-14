@@ -12,7 +12,7 @@ interface FormInputProps {
   value: string;
   isError: boolean;
   error: string | undefined;
-  label: string;
+  label?: string;
   disabled?: boolean
 }
 
