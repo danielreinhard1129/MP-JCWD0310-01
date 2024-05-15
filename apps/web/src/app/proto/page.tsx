@@ -1,10 +1,9 @@
 "use client";
 import AddTicket from "@/components/AddTicket";
-import FormDate from "@/components/FormDate";
+import Autocomplete from "@/components/Autocomplete";
 import FormInput from "@/components/FormInput";
 import FormLocation from "@/components/FormLocation";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -19,11 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Select,
   SelectContent,
   SelectGroup,
@@ -33,12 +27,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import { FormikHandlers, useFormik } from "formik";
-import { ArrowBigLeft, CalendarIcon } from "lucide-react";
 import * as React from "react";
-import { FC, HTMLInputTypeAttribute } from "react";
+import { HTMLInputTypeAttribute } from "react";
 import { GrMap } from "react-icons/gr";
 
 interface FormLocationProps {
@@ -167,7 +158,7 @@ const FormTicket = () => {
                       isError={!!touched.ticketName && !!errors.ticketName}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      disabled={false}
+                      // disabled={false}
                     />
 
                     <div>
@@ -198,7 +189,7 @@ const FormTicket = () => {
                       isError={!!touched.ticketPrice && !!errors.ticketPrice}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      disabled={false}
+                      // disabled={false}
                     />
                     <div className="flex gap-2 ">
                       <Label htmlFor="isFree" className="my-auto text-right">
@@ -232,36 +223,9 @@ const FormTicket = () => {
                       }
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      disabled={false}
+                      // disabled={false}
                     />
 
-                    <FormDate
-                      name="ticketStart"
-                      label="Tikect Start"
-                      placeholder=""
-                      value={values.ticketStart}
-                      error={errors.ticketStart}
-                      isError={!!touched.ticketStart && !!errors.ticketStart}
-                      onChange={(date: Date | [Date, Date] | null) =>
-                        setFieldValue("ticketStart", date)
-                      }
-                      onBlur={() => setFieldTouched("ticketStart", true)}
-                    />
-
-                    <FormDate
-                      name="ticketExpires"
-                      label="Tikect Expires"
-                      placeholder=""
-                      value={values.ticketExpires}
-                      error={errors.ticketExpires}
-                      isError={
-                        !!touched.ticketExpires && !!errors.ticketExpires
-                      }
-                      onChange={(date: Date | [Date, Date] | null) =>
-                        setFieldValue("ticketExpires", date)
-                      }
-                      onBlur={() => setFieldTouched("ticketExpires", true)}
-                    />
                   </div>
                 </TabsContent>
               </Tabs>
@@ -308,7 +272,7 @@ const FormTicket = () => {
                   isError={!!touched.voucherTitle && !!errors.voucherTitle}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  disabled={false}
+                  // disabled={false}
                 />
 
                 <div className="grid grid-cols-2 items-center gap-4">
@@ -322,7 +286,7 @@ const FormTicket = () => {
                     isError={!!touched.voucherLimit && !!errors.voucherLimit}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    disabled={false}
+                    // disabled={false}
                   />
 
                   <FormInput
@@ -337,25 +301,10 @@ const FormTicket = () => {
                     }
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    disabled={false}
+                    // disabled={false}
                   />
                 </div>
-                <div>
-                  <FormDate
-                    name="voucherExpires"
-                    label="Expires Date"
-                    placeholder="Expires Date"
-                    value={values.voucherExpires}
-                    error={errors.voucherExpires}
-                    isError={
-                      !!touched.voucherExpires && !!errors.voucherExpires
-                    }
-                    onChange={(date: Date | [Date, Date] | null) =>
-                      setFieldValue("voucherExpires", date)
-                    }
-                    onBlur={() => setFieldTouched("voucherExpires", true)}
-                  />
-                </div>
+                
               </div>
               <DialogFooter>
                 <DialogClose asChild>
@@ -419,7 +368,7 @@ const FormTicket = () => {
                     isError={!!touched.place && !!errors.place}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    disabled={false}
+                    // disabled={false}
                   />
                 </div>
                 <div className="my-4 flex h-[54px] w-full  flex-col rounded-sm px-0 py-2">
@@ -433,7 +382,7 @@ const FormTicket = () => {
                     isError={!!touched.address && !!errors.address}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    disabled={false}
+                    // disabled={false}
                   />
                 </div>
                 <div className="my-4 flex h-[54px] w-full  flex-col rounded-sm px-0 py-2">
@@ -447,7 +396,7 @@ const FormTicket = () => {
                     isError={!!touched.city && !!errors.city}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    disabled={false}
+                    // disabled={false}
                   />
                 </div>
                 <div className="my-4 flex h-[54px] w-full  flex-col rounded-sm px-0 py-2">
@@ -461,7 +410,7 @@ const FormTicket = () => {
                     isError={!!touched.province && !!errors.province}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    disabled={false}
+                    // disabled={false}
                   />
                 </div>
               </div>
@@ -530,6 +479,7 @@ const FormTicket = () => {
         </DialogContent>
       </Dialog>
       </div>
+      <Autocomplete/>
       <div>
         <Input type="time"/>
       </div>

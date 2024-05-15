@@ -22,16 +22,27 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logoutAction } from "@/redux/slices/userSlice";
+import useGetEvents from "@/hooks/api/admin/useGetEvents";
+import { debounce } from "lodash";
+import AsyncSelect from "react-select/async";
+import { appConfig } from "@/utils/config";
+
+interface EventOption {
+  value: number;
+  label: string;
+}
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [search, setSearch] = useState<string>("");
+  const { data, isLoading } = useGetEvents({ search });
   const { id } = useAppSelector((state) => state.user);
 
   const logout = () => {
@@ -39,12 +50,32 @@ const Header: React.FC = () => {
     dispatch(logoutAction());
   };
 
+  const loadOptions = (
+    inputValue: string,
+    callback: (option: EventOption[]) => void,
+  ) => {
+    try {
+      const options = data.map((event) => {
+        return {
+          label: event.title,
+          value: event.id,
+        };
+      });
+      callback(options);
+      setSearch(inputValue);
+    } catch (error) {
+      callback([]);
+    }
+  };
+
+  const debounceLoadOptions = debounce(loadOptions, 750);
+
   const SHEET_SIDES = ["top"] as const;
   type SheetSide = (typeof SHEET_SIDES)[number];
 
   return (
     <div className="header">
-      <div className="container mx-auto bg-marine-800">
+      <div className="container mx-auto bg-marine-400">
         <div className="flex items-center justify-between py-3 lg:px-4">
           <div className="item-center flex justify-between gap-10">
             <Link href="/">
@@ -58,13 +89,17 @@ const Header: React.FC = () => {
             </Link>
 
             <div className="relative my-auto hidden lg:block">
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-[400px] rounded-md border border-gray-300 px-3 py-1 focus:border-blue-500 focus:outline-none"
+              <AsyncSelect
+                placeholder="Search for event"
+                className="w-[400px] rounded-md px-3 py-1 focus:outline-none"
+                loadOptions={debounceLoadOptions}
+                isLoading={isLoading}
+                onChange={(event) => {
+                  router.push(appConfig.baseUrlNext + `/${event?.value}`);
+                }}
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 transform">
-                <FaSearch />
+              <span className="absolute right-14 top-1/2 -translate-y-1/2 transform">
+                <FaSearch className="text-gray-400" />
               </span>
             </div>
           </div>
@@ -94,14 +129,15 @@ const Header: React.FC = () => {
                   </div>
                 ) : (
                   <div>
-                    <Button 
-                    onClick={() => router.push('/login')} 
-                    variant="ghost" 
-                    className="mx-1 text-white">
+                    <Button
+                      onClick={() => router.push("/login")}
+                      variant="ghost"
+                      className="mx-1 text-white"
+                    >
                       <Link href="/login">Login</Link>
                     </Button>
                     <Button
-                      onClick={() => router.push('/register')}
+                      onClick={() => router.push("/register")}
                       variant="ghost"
                       className="mx-1 text-white"
                     >
@@ -143,9 +179,8 @@ const Header: React.FC = () => {
                 </Sheet>
               ))}
             </div>
-            
+
             <div className="sm:block lg:hidden">
-            
               {/* Mobile navigation */}
               {Boolean(id) ? (
                 <Sheet>
@@ -160,7 +195,7 @@ const Header: React.FC = () => {
                       </SheetDescription>
                     </SheetHeader>
                     <div className="grid gap-4 py-4">
-                    <Button
+                      <Button
                         onClick={() => router.push("/admin/create-event")}
                         variant="ghost"
                         className="justify-normal"

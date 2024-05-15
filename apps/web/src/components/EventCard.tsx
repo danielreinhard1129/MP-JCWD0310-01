@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { FC } from 'react';
 import { Badge } from './ui/badge';
 import Link from 'next/link';
+import { Separator } from './ui/separator';
 
 interface EventCardProps {
   title: string;
@@ -36,13 +37,14 @@ const EventCard: FC<EventCardProps> = ({
           </div>
         </CardHeader>
         <CardContent>
-          <Badge variant="outline" className="rounded-sm bg-green-100">
+          <h2 className="line-clamp-2 text-lg font-semibold">{title}</h2>
+          <Badge variant="outline" className="rounded-sm bg-marine-200 mb-5">
             {category}
           </Badge>
-          <h2 className="line-clamp-2 text-lg font-semibold">{title}</h2>
-          <p className="text-sm font-light italic">
-            {format(startDate, 'dd MMMM yyyy')} - {price}
+          <p className="text-sm font-light italic mb-2">
+            {format(startDate, 'dd MMMM yyyy')} - {price === 0 ? 'Free' : `Rp.${price}`}
           </p>
+          <Separator/>
           <p className="line-clamp-3 ">{category}</p>
         </CardContent>
       </Card>
