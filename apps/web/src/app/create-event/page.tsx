@@ -175,3 +175,4 @@ const CreateEventPage = () => {
 };
 
 export default AuthGuardOrganizer(CreateEventPage);
+
