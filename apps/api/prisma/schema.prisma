@@ -21,16 +21,15 @@ model Sample {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  fullName   String
-  email      String    @unique
-  password   String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
-  role       RoleUser  @default(CUSTOMER)
-  isVerified Boolean   @default(false)
-
+  id          Int           @id @default(autoincrement())
+  fullName    String
+  email       String        @unique
+  password    String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  isVerified  Boolean       @default(false)
+  role        RoleUser      @default(CUSTOMER)
   UserDetail  UserDetail?
   Event       Event[]
   UserVoucher UserVoucher[]
@@ -51,7 +50,7 @@ model UserDetail {
   phoneNumber String?
   firstName   String?
   lastName    String?
-  referral    String ?          @unique
+  referral    String?          @unique
   userId      Int              @unique
   gender      GenderUserDetail @default(MALE)
 
@@ -66,20 +65,18 @@ enum GenderUserDetail {
 }
 
 model Category {
-  id    Int     @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   title String
-  Event Event[]
 
   @@map("categories")
 }
 
 model Location {
-  id       Int     @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   name     String
   city     String
   province String
   address  String
-  Event    Event[]
 
   @@map("locations")
 }
@@ -90,6 +87,7 @@ model TicketType {
   price       Int
   limit       Int
   booked      Int
+  category    String
   expiredDate DateTime?
 
   eventId           Int
@@ -100,21 +98,25 @@ model TicketType {
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String   @db.LongText
-  startDate   DateTime
-  endDate     DateTime
-  limit       Int
-  booked      Int
-
-  locationId  Int
-  organizerId Int
-  categoryId  Int
-
-  location     Location       @relation(fields: [locationId], references: [id])
+  id           Int            @id @default(autoincrement())
+  title        String
+  description  String         @db.LongText
+  startDate    DateTime
+  endDate      DateTime
+  address      String
+  city         String
+  limit        Int
+  booked       Int?
+  thumbnail    String
+  category     String
+  price        Int
+  organizerId  Int
   organizer    User           @relation(fields: [organizerId], references: [id])
-  category     Category       @relation(fields: [categoryId], references: [id])
+  deletedAt    DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  // location     Location       @relation(fields: [locationId], references: [id])
+  // category     Category       @relation(fields: [categoryId], references: [id])
   TicketType   TicketType[]
   EventVoucher EventVoucher[]
   Review       Review?
