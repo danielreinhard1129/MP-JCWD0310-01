@@ -42,7 +42,7 @@ const EventCard: FC<EventCardProps> = ({
             {category}
           </Badge>
           <p className="text-sm font-light italic mb-2">
-            {format(startDate, 'dd MMMM yyyy')} - {price === 0 ? 'Free' : `Rp.${price}`}
+            {format(startDate, 'dd MMMM yyyy')} - {price === 0 ? 'Free' : `Rp.$${price}`}
           </p>
           <Separator/>
           <p className="line-clamp-3 ">{category}</p>
