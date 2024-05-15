@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetClose,
@@ -12,9 +12,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { FaSearch } from "react-icons/fa";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { Separator } from "@/components/ui/separator";
 import {
   CompassIcon,
   HomeIcon,
@@ -24,35 +21,23 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { FaSearch } from "react-icons/fa";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logoutAction } from "@/redux/slices/userSlice";
 
 const Header: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { id } = useAppSelector((state) => state.user);
 
-  const {id} = useAppSelector((state)=>state.user)
-
-  const dispatch = useAppDispatch()
-
-  const logout =  () => {
+  const logout = () => {
     localStorage.removeItem("token");
     dispatch(logoutAction());
   };
-
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // // Toggle login state
-  // const toggleLogin = () => {
-  //   setIsLoggedIn(!isLoggedIn);
-  // };
-
-  // const isLoggedOut = !isLoggedIn;
-
-  // useEffect(() => {
-  //   // Logic to determine if user is logged in or not
-  //   // For demonstration purposes, I'm assuming user is logged out initially
-  //   setIsLoggedIn(false);
-  // }, []);
 
   const SHEET_SIDES = ["top"] as const;
   type SheetSide = (typeof SHEET_SIDES)[number];
@@ -83,12 +68,13 @@ const Header: React.FC = () => {
               </span>
             </div>
           </div>
+
           <div className="flex items-center gap-3">
             <div className="hidden items-center justify-between gap-3 lg:block">
               <div className="flex items-center">
                 <Badge className="mx-1 bg-transparent ">
                   <TicketMinusIcon className="mr-2 h-4 w-4" />
-                  <Link href="/">Create Event</Link>
+                  <Link href="/admin/create-event">Create Event</Link>
                 </Badge>
 
                 <Badge className="mx-1 bg-transparent">
@@ -96,32 +82,30 @@ const Header: React.FC = () => {
                   <Link href="/">Event Discover</Link>
                 </Badge>
 
-                {!Boolean(id) ? (
+                {Boolean(id) ? (
                   <div>
-                    <Button
-                      // onClick={toggleLogin}
-                      variant="ghost"
-                      className="mx-1 text-white"
-                    >
-                      <Link href="/login">Login</Link>
-                    </Button>
-                    <Button
-                      // onClick={toggleLogin}
-                      variant="ghost"
-                      className="mx-1 text-white"
-                    >
-                      <Link href="/register">Register</Link>
-                    </Button>
-                  </div>
-                ) : (
-                  <div>
-                    {/* Tampilkan tombol logout */}
                     <Button
                       onClick={logout}
                       variant="ghost"
                       className="mx-1  text-white"
                     >
                       Logout
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Button 
+                    onClick={() => router.push('/login')} 
+                    variant="ghost" 
+                    className="mx-1 text-white">
+                      <Link href="/login">Login</Link>
+                    </Button>
+                    <Button
+                      onClick={() => router.push('/register')}
+                      variant="ghost"
+                      className="mx-1 text-white"
+                    >
+                      Register
                     </Button>
                   </div>
                 )}
@@ -159,9 +143,47 @@ const Header: React.FC = () => {
                 </Sheet>
               ))}
             </div>
+            
             <div className="sm:block lg:hidden">
+            
               {/* Mobile navigation */}
-              {!Boolean(id) ? (
+              {Boolean(id) ? (
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <RxHamburgerMenu className="size-7" />
+                  </SheetTrigger>
+                  <SheetContent className="w-[400px]">
+                    <SheetHeader>
+                      <SheetTitle>Log In to your Account </SheetTitle>
+                      <SheetDescription>
+                        To Access all features from Eventour
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="grid gap-4 py-4">
+                    <Button
+                        onClick={() => router.push("/admin/create-event")}
+                        variant="ghost"
+                        className="justify-normal"
+                      >
+                        <TicketMinusIcon className="mr-2 h-4 w-4" />
+                        Create Your Event
+                      </Button>
+                      <SheetFooter>
+                        <SheetClose asChild>
+                          <Button
+                            onClick={logout}
+                            variant="ghost"
+                            className="justify-normal"
+                          >
+                            <LogOut className="mr-2 h-4 w-4" />
+                            <Link href="/">Logout</Link>
+                          </Button>
+                        </SheetClose>
+                      </SheetFooter>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              ) : (
                 <Sheet>
                   <SheetTrigger asChild>
                     <RxHamburgerMenu className="size-7" />
@@ -178,20 +200,20 @@ const Header: React.FC = () => {
                       <div className="flex items-end justify-center gap-3">
                         <SheetClose asChild>
                           <Button
-                            // onClick={toggleLogin}
+                            onClick={() => router.push("/login")}
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
-                            <Link href="/login">Login</Link>
+                            Login
                           </Button>
                         </SheetClose>
                         <SheetClose asChild>
                           <Button
-                            // onClick={toggleLogin}
+                            onClick={() => router.push("/register")}
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
-                            <Link href="/register">Register</Link>
+                            Register
                           </Button>
                         </SheetClose>
                       </div>
@@ -203,65 +225,30 @@ const Header: React.FC = () => {
                         <HomeIcon className="mr-2 h-4 w-4" />
                         <Link href="/">Home</Link>
                       </Button>
-                      <Button variant="ghost" className="justify-normal">
+                      <Button
+                        onClick={() => router.push("/admin/create-event")}
+                        variant="ghost"
+                        className="justify-normal"
+                      >
                         <TicketMinusIcon className="mr-2 h-4 w-4" />
-                        <Link href="/create-event">Create Your Event</Link>
+                        Create Your Event
                       </Button>
-                      <Button variant="ghost" className="justify-normal">
+                      <Button
+                        onClick={() => router.push("/event-discover")}
+                        variant="ghost"
+                        className="justify-normal"
+                      >
                         <CompassIcon className="mr-2 h-4 w-4" />
-                        <Link href="/">Even Discover</Link>
+                        Event Discover
                       </Button>
-                      <Button variant="ghost" className="justify-normal">
+                      <Button
+                        onClick={() => router.push("/")}
+                        variant="ghost"
+                        className="justify-normal"
+                      >
                         <UserRound className="mr-2 h-4 w-4" />
-                        <Link href="/">Profile</Link>
+                        Profile
                       </Button>
-                    </div>
-                  </SheetContent>
-                </Sheet>
-              ) : (
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <RxHamburgerMenu className="size-7" />
-                  </SheetTrigger>
-                  <SheetContent className="w-[400px]">
-                    <SheetHeader>
-                      <SheetTitle>Your Account </SheetTitle>
-                      <SheetDescription>Welcome User</SheetDescription>
-                    </SheetHeader>
-                    <div className="grid gap-4 py-4"></div>
-                    <SheetFooter></SheetFooter>
-
-                    <Separator className="my-4" />
-                    <div className="flex flex-col gap-4">
-                      <Button variant="ghost" className="justify-normal">
-                        <HomeIcon className="mr-2 h-4 w-4" />
-                        <Link href="/">Dash Board</Link>
-                      </Button>
-                      <Button variant="ghost" className="justify-normal">
-                        <UserRound className="mr-2 h-4 w-4" />
-                        <Link href="/">Profile</Link>
-                      </Button>
-                      <Button variant="ghost" className="justify-normal">
-                        <TicketMinusIcon className="mr-2 h-4 w-4" />
-                        <Link href="/create-event">Create Your Event</Link>
-                      </Button>
-                      <Button variant="ghost" className="justify-normal">
-                        <CompassIcon className="mr-2 h-4 w-4" />
-                        <Link href="/">Even Discover</Link>
-                      </Button>
-
-                      <SheetFooter>
-                      <SheetClose asChild>
-                        <Button
-                          onClick={logout}
-                          variant="ghost"
-                          className="justify-normal"
-                        >
-                          <LogOut className="mr-2 h-4 w-4" />
-                          <Link href="/">Logout</Link>
-                        </Button>
-                      </SheetClose>
-                      </SheetFooter>
                     </div>
                   </SheetContent>
                 </Sheet>

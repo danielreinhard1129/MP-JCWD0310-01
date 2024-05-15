@@ -13,7 +13,6 @@ interface FormInputProps {
   isError: boolean;
   error: string | undefined;
   label: string;
-  disabled: boolean
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -26,10 +25,10 @@ const FormInput: React.FC<FormInputProps> = ({
   value,
   error,
   isError,
-  disabled = false
+  
 }) => {
   return (
-    <div className="flex flex-col space-y-1.5">
+    <div className="flex flex-col space-y-1.5 my-3 w-full">
       <Label htmlFor={name} className={isError ? 'text-red-600' : ''}>
         {label}
       </Label>
@@ -40,8 +39,7 @@ const FormInput: React.FC<FormInputProps> = ({
         onChange={onChange}
         onBlur={onBlur}
         value={value}
-        className={isError ? 'border-red-600' : ''}
-        disabled = {disabled}
+        className={isError ? 'border-red-600' : 'bg-marine-100'}
       />
       {isError ? <div className="text-xs text-red-500">{error}</div> : null}
     </div>
