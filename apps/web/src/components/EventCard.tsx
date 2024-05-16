@@ -25,6 +25,7 @@ const EventCard: FC<EventCardProps> = ({
 }) => {
   return (
     <Link href={`/events/${eventId}`}>
+
       <Card>
         <CardHeader>
           <div className="relative h-[220px] w-full overflow-hidden rounded-md">
