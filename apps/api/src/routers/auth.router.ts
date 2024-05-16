@@ -29,7 +29,7 @@ export class AuthRouter {
     );
     this.router.post(
       '/register-organizer',
-      // validateRegisterInput,
+      
       this.authController.registerOrganizerController,
     );
     this.router.post(

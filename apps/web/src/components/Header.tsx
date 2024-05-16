@@ -159,14 +159,19 @@ const Header: React.FC = () => {
                     <SheetHeader>
                       <SheetTitle>Find Your Event </SheetTitle>
                       <SheetDescription>
-                        <input
-                          type="text"
-                          placeholder="Search"
-                          className="w-[350px] rounded-md border border-gray-300 px-3 py-1 focus:border-blue-500 focus:outline-none"
-                        />
-                        <span className="absolute right-7 top-1/2 -translate-y-1/2 transform">
-                          <FaSearch />
-                        </span>
+                        <div className="w-[350px] rounded-md px-3 py-1 focus:border-blue-500 focus:outline-none">
+                          <AsyncSelect
+                            placeholder="Search for event"
+                            
+                            loadOptions={debounceLoadOptions}
+                            isLoading={isLoading}
+                            onChange={(event) => {
+                              router.push(
+                                appConfig.baseUrlNext + `/${event?.value}`,
+                              );
+                            }}
+                          />
+                        </div>
                       </SheetDescription>
                     </SheetHeader>
                     <div className="grid gap-4 py-4"></div>
