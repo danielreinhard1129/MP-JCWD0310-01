@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-
 import {
   Sheet,
   SheetClose,
@@ -43,22 +42,12 @@ import { debounce } from "lodash";
 import AsyncSelect from "react-select/async";
 import { appConfig } from "@/utils/config";
 
+  
 interface EventOption {
   value: number;
   label: string;
 }
 
-const Header: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const [search, setSearch] = useState<string>("");
-  const { data, isLoading } = useGetEvents({ search });
-  const { id } = useAppSelector((state) => state.user);
-
-interface EventOption {
-  value: number;
-  label: string;
-}
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -84,6 +73,7 @@ const Header: React.FC = () => {
     localStorage.removeItem("token");
     dispatch(logoutAction());
   };
+
 
   const loadOptions = (
     inputValue: string,
@@ -153,6 +143,11 @@ const Header: React.FC = () => {
                 </Badge>
 
                 {Boolean(id) ? (
+
+                  <div>
+                    <Button
+                      onClick={logout}
+
                   <div>
                     <DropdownMenu
                       open={openDropdown}
@@ -193,16 +188,30 @@ const Header: React.FC = () => {
                   <div>
                     <Button
                       onClick={() => router.push("/login")}
+
+                      variant="ghost"
+                      className="mx-1  text-white"
+                    >
+                      Logout
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Button
+
+                      onClick={() => router.push("/login")}
                       variant="ghost"
                       className="mx-1 text-white"
                     >
                       <Link href="/login">Login</Link>
                     </Button>
                     <Button
+
                       onClick={() => router.push("/register")}
                       variant="ghost"
                       className="mx-1 text-white"
                     >
+
                       Register
                     </Button>
                   </div>
@@ -250,13 +259,17 @@ const Header: React.FC = () => {
             <div className="sm:block lg:hidden">
               {/* Mobile navigation */}
               {Boolean(id) ? (
+
+
                 <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
+
 
                   <SheetTrigger asChild>
                     <RxHamburgerMenu className="size-7" />
                   </SheetTrigger>
                   <SheetContent className="w-[400px]">
                     <SheetHeader>
+
 
                       <SheetTitle>Welcome, {fullName} </SheetTitle>
                     </SheetHeader>
@@ -299,6 +312,7 @@ const Header: React.FC = () => {
                       ) : null}
 
 
+
                       <SheetFooter>
                         <SheetClose asChild>
                           <Button
@@ -315,6 +329,9 @@ const Header: React.FC = () => {
                   </SheetContent>
                 </Sheet>
               ) : (
+
+             
+
                 <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
 
                   <SheetTrigger asChild>
@@ -333,7 +350,9 @@ const Header: React.FC = () => {
                         <SheetClose asChild>
                           <Button
 
+
                             onClick={() => handleRouterDrawer("/login")}
+
 
                             className="w-[150px] bg-marine-500"
                             type="submit"
@@ -343,7 +362,10 @@ const Header: React.FC = () => {
                         </SheetClose>
                         <SheetClose asChild>
                           <Button
+
+
                             onClick={() => handleRouterDrawer("/register")}
+
 
                             className="w-[150px] bg-marine-500"
                             type="submit"
@@ -367,9 +389,12 @@ const Header: React.FC = () => {
                         Home
                       </Button>
                       <Button
+
+                      
                         onClick={() =>
                           handleRouterDrawer("/admin/create-event")
                         }
+
 
                         variant="ghost"
                         className="justify-normal"
@@ -378,13 +403,18 @@ const Header: React.FC = () => {
                         Create Your Event
                       </Button>
                       <Button
+
+    
                         onClick={() => handleRouterDrawer("/event-discover")}
+
 
                         variant="ghost"
                         className="justify-normal"
                       >
                         <CompassIcon className="mr-2 h-4 w-4" />
                         Event Discover
+
+                      
                       </Button>
                       <Button
                         onClick={() =>
@@ -397,6 +427,7 @@ const Header: React.FC = () => {
                         <UserRound className="mr-2 h-4 w-4" />
                         Profile
                       </Button>
+
                     </div>
                   </SheetContent>
                 </Sheet>
