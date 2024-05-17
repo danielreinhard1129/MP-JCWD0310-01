@@ -13,6 +13,7 @@ import {
 import useRegisterOrganizer from "@/hooks/api/auth/useRegisterOrganizer";
 import { useFormik } from "formik";
 import { RegisterOrganizerValidationSchema } from "./schemas/RegisterValidationSchema";
+import Link from "next/link";
 
 const RegisterOrganizer: React.FC = () => {
   const { register } = useRegisterOrganizer();
@@ -33,11 +34,11 @@ const RegisterOrganizer: React.FC = () => {
   
 
   return (
-    <main className="container mx-auto px-4">
-      <div className="mt-16 flex justify-center">
-        <Card className="w-[350px] ">
+    <main className="container mx-auto px-4 min-h-screen">
+      <div className="mt-24 flex justify-center">
+        <Card className="w-[350px] shadow-xl">
           <CardHeader className="space-y-4">
-            <CardTitle className="text-center text-2xl ">Sign-Up!</CardTitle>
+            <CardTitle className="text-center text-2xl ">Sign-Up as an Organizer!</CardTitle>
             <CardDescription>Sign-up as an organizer and create your own event! </CardDescription>
           </CardHeader>
           <CardContent>
@@ -86,8 +87,13 @@ const RegisterOrganizer: React.FC = () => {
               </div>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-end">
-            {/* <Button className=" text-white">Register</Button> */}
+          <CardFooter className="flex justify-start">
+          <div className="flex justify-start gap-1 text-xs font-extralight">
+              Already have an account?
+              <Link href="/login" className="underline">
+                <p> Login</p>
+              </Link>
+            </div>
           </CardFooter>
         </Card>
       </div>

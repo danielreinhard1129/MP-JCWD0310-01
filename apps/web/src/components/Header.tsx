@@ -43,17 +43,7 @@ import { debounce } from "lodash";
 import AsyncSelect from "react-select/async";
 import { appConfig } from "@/utils/config";
 
-interface EventOption {
-  value: number;
-  label: string;
-}
 
-const Header: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const [search, setSearch] = useState<string>("");
-  const { data, isLoading } = useGetEvents({ search });
-  const { id } = useAppSelector((state) => state.user);
 
 interface EventOption {
   value: number;
@@ -109,8 +99,8 @@ const Header: React.FC = () => {
   type SheetSide = (typeof SHEET_SIDES)[number];
 
   return (
-    <div className="header">
-      <div className="container mx-auto bg-marine-400">
+    <div className="header bg-marine-400">
+      <div className="container mx-auto ">
         <div className="flex items-center justify-between py-3 lg:px-4">
           <div className="item-center flex justify-between gap-10">
             <Link href="/">
@@ -408,5 +398,6 @@ const Header: React.FC = () => {
     </div>
   );
 };
+
 
 export default Header;

@@ -146,9 +146,10 @@ enum VoucherType {
 }
 
 model UserVoucher {
-  id        Int @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   voucherId Int
   userId    Int
+  isUsed    Boolean @default(false)
 
   user              User               @relation(fields: [userId], references: [id])
   voucher           Voucher            @relation(fields: [voucherId], references: [id])
@@ -204,13 +205,14 @@ enum RatingReview {
 }
 
 model Transaction {
-  id        Int               @id @default(autoincrement())
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  status    StatusTransaction @default(PENDING)
-  total     Int
-  userId    Int
-  eventId   Int               @unique
+  id           Int               @id @default(autoincrement())
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  status       StatusTransaction @default(PENDING)
+  total        Int
+  userId       Int
+  eventId      Int               @unique
+  paymentProof String?
 
   user              User               @relation(fields: [userId], references: [id])
   event             Event              @relation(fields: [eventId], references: [id])
