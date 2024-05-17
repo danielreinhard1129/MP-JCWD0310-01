@@ -490,6 +490,7 @@ const FormTicket = () => {
           <div className="w-[100px] h-[100px] rounded-full bg-slate-300"></div>
           <div className="w-[100px] h-[100px] rounded-full bg-slate-300"></div>
         </div>
+
       </div>
     </div>
   );

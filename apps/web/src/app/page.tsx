@@ -24,6 +24,7 @@ const home = () => {
   };
 
   return (
+
     <main className="flex min-h-screen flex-col items-center justify-center bg-marine-100 px-4">
       <h1 className="mb-4 mt-5 text-2xl font-bold md:mb-8 md:text-3xl">
         Top Trending Events
@@ -89,6 +90,7 @@ const home = () => {
           </CarouselContent>
         </Carousel>
       </div>
+<
       <section>
       <h1 className="mb-4 mt-5 text-lg font-semibold md:mb-8 md:text-xl text-left">
         Upcoming Events
@@ -107,6 +109,7 @@ const home = () => {
           />
         ))}
       </div>
+
       </section>
       
       <div className="mt-6">
