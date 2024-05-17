@@ -6,16 +6,19 @@ import { appConfig } from "@/utils/config";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound, useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
 import { IoMdTime } from "react-icons/io";
 import { FiMapPin } from "react-icons/fi";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import CustomBreadcrumb from "@/components/Breadcrumb";
+
 
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const { event, isLoading } = useGetEvent(Number(params.id));
   const router = useRouter();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   if (isLoading) {
     return (
@@ -28,11 +31,23 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
   if (!event) {
     return notFound();
   }
+
+  const toggleDescription = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const eventDetailBreadcrumb = [
+    { label: "Home", href: "/" },
+    { label: "Category", href: `/category/${event.categoryId}` },
+    { label: `....`, href: `${event.id}` },
+  ];
+
   return (
     <main className="container mx-auto px-4">
-      <section className="mb-4 mt-5 lg:mx-12">
-        <div className="mb-4 gap-3 space-y-1.5 lg:grid lg:grid-cols-5 lg:gap-8">
-          <div className="relative p-2 lg:col-span-3">
+      <CustomBreadcrumb paths={eventDetailBreadcrumb} />
+      <section className="mb-4 mt-2 lg:mx-12">
+        <div className="mb-4 gap-3 space-y-1.5 lg:grid lg:grid-cols-6 lg:gap-8">
+          <div className="relative p-2 lg:col-span-4">
             <div className="h-[250px]  lg:h-[400px]">
               <Image
                 fill
@@ -82,7 +97,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div className="p-regular-20 flex items-center gap-3">
                   <div className="flex justify-start">
-                    <FiMapPin className="mr-2  text-slate-600" size={26} />
+                    <FiMapPin className="mr-2  text-slate-600" size={17} />
                     <p className="mb:5 text-base font-light md:mb-8">
                       {event.address} - {event.city}
                     </p>
@@ -110,25 +125,39 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
       </section>
       {/* DESCRIPTION AND */}
       <section className="mb-4 mt-5 lg:mx-12">
-        <div className="mb-4 space-y-1.5 lg:grid lg:grid-cols-5 lg:gap-8">
-          <div className="relative h-[400px] lg:col-span-3">
-            <div className="flex flex-col gap-3">
-              <p className="p-bold-20 text-grey-600 text-md p-6">
+        <div className=" mb-4 space-y-1.5 flex flex-col lg:grid lg:grid-cols-6 lg:gap-8">
+          <div className="h-[400px] lg:col-span-4">
+            <div className=" flex flex-col gap-3">
+              <p className="p-bold-20 text-grey-600 text-md pl-6">
                 Description:
               </p>
-              <p className="lg:p-regular-18 p-6">{event.description}</p>
-              {/* <p className="p-medium-16 lg:p-regular-18 truncate text-primary-500 underline">{event.url}</p> */}
+              <div className="">
+                <p
+                  className="lg:p-regular-18 block p-6 lg:hidden"
+                  onClick={toggleDescription}
+                >
+                  {isExpanded
+                    ? event.description
+                    : event.description.slice(0, 135)}
+                  {event.description.length > 3 && !isExpanded && "..."}
+                </p>
+                <p className="lg:p-regular-18 hidden p-6 md:block">
+                  {event.description}
+                </p>
+              </div>
             </div>
           </div>
           {/* BUy Button */}
-          <div className="lg:col-span-2">
-            <div className="flex justify-center p-4">
-              <button
-                onClick={() => router.push("/transaction")}
-                className="mt-6 w-full rounded-lg bg-blue-600 py-2 text-white shadow-md lg:w-[350px]"
-              >
-                Get a Ticket
-              </button>
+          <div className=" lg:col-span-2">
+            <div className="rounded-lg border p-4 shadow-md">
+              <div className="flex justify-center  ">
+                <button
+                  onClick={() => router.push("/transaction")}
+                  className=" w-full rounded-lg bg-blue-600 py-2 text-white shadow-md lg:w-[350px]"
+                >
+                  Get a Ticket
+                </button>
+              </div>
             </div>
           </div>
         </div>
