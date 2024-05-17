@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-
 import {
   Sheet,
   SheetClose,
@@ -43,8 +42,6 @@ import { debounce } from "lodash";
 import AsyncSelect from "react-select/async";
 import { appConfig } from "@/utils/config";
 
-
-
 interface EventOption {
   value: number;
   label: string;
@@ -68,7 +65,6 @@ const Header: React.FC = () => {
     setOpenDrawer(false);
     router.push(link);
   };
-
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -99,8 +95,8 @@ const Header: React.FC = () => {
   type SheetSide = (typeof SHEET_SIDES)[number];
 
   return (
-    <div className="header bg-marine-400">
-      <div className="container mx-auto ">
+    <div className="header">
+      <div className="container mx-auto bg-marine-400">
         <div className="flex items-center justify-between py-3 lg:px-4">
           <div className="item-center flex justify-between gap-10">
             <Link href="/">
@@ -144,6 +140,13 @@ const Header: React.FC = () => {
 
                 {Boolean(id) ? (
                   <div>
+                    {/* <Button
+                      onClick={logout}
+                      variant="ghost"
+                      className="mx-1  text-white"
+                    >
+                      Logout
+                    </Button> */}
                     <DropdownMenu
                       open={openDropdown}
                       onOpenChange={setOpenDropdown}
@@ -177,7 +180,6 @@ const Header: React.FC = () => {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-
                   </div>
                 ) : (
                   <div>
@@ -211,19 +213,14 @@ const Header: React.FC = () => {
                     <SheetHeader>
                       <SheetTitle>Find Your Event </SheetTitle>
                       <SheetDescription>
-                        <div className="w-[350px] rounded-md px-3 py-1 focus:border-blue-500 focus:outline-none">
-                          <AsyncSelect
-                            placeholder="Search for event"
-                            
-                            loadOptions={debounceLoadOptions}
-                            isLoading={isLoading}
-                            onChange={(event) => {
-                              router.push(
-                                appConfig.baseUrlNext + `/${event?.value}`,
-                              );
-                            }}
-                          />
-                        </div>
+                        <input
+                          type="text"
+                          placeholder="Search"
+                          className="w-[350px] rounded-md border border-gray-300 px-3 py-1 focus:border-blue-500 focus:outline-none"
+                        />
+                        <span className="absolute right-7 top-1/2 -translate-y-1/2 transform">
+                          <FaSearch />
+                        </span>
                       </SheetDescription>
                     </SheetHeader>
                     <div className="grid gap-4 py-4"></div>
@@ -241,13 +238,11 @@ const Header: React.FC = () => {
               {/* Mobile navigation */}
               {Boolean(id) ? (
                 <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
-
                   <SheetTrigger asChild>
                     <RxHamburgerMenu className="size-7" />
                   </SheetTrigger>
                   <SheetContent className="w-[400px]">
                     <SheetHeader>
-
                       <SheetTitle>Welcome, {fullName} </SheetTitle>
                     </SheetHeader>
                     <div className="grid gap-4 py-4">
@@ -288,7 +283,6 @@ const Header: React.FC = () => {
                         </Button>
                       ) : null}
 
-
                       <SheetFooter>
                         <SheetClose asChild>
                           <Button
@@ -306,7 +300,6 @@ const Header: React.FC = () => {
                 </Sheet>
               ) : (
                 <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
-
                   <SheetTrigger asChild>
                     <RxHamburgerMenu className="size-7" />
                   </SheetTrigger>
@@ -322,9 +315,7 @@ const Header: React.FC = () => {
                       <div className="flex items-end justify-center gap-3">
                         <SheetClose asChild>
                           <Button
-
                             onClick={() => handleRouterDrawer("/login")}
-
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
@@ -334,7 +325,6 @@ const Header: React.FC = () => {
                         <SheetClose asChild>
                           <Button
                             onClick={() => handleRouterDrawer("/register")}
-
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
@@ -360,7 +350,6 @@ const Header: React.FC = () => {
                         onClick={() =>
                           handleRouterDrawer("/admin/create-event")
                         }
-
                         variant="ghost"
                         className="justify-normal"
                       >
@@ -369,7 +358,6 @@ const Header: React.FC = () => {
                       </Button>
                       <Button
                         onClick={() => handleRouterDrawer("/event-discover")}
-
                         variant="ghost"
                         className="justify-normal"
                       >
@@ -380,7 +368,6 @@ const Header: React.FC = () => {
                         onClick={() =>
                           handleRouterDrawer(`/profile/${id}/edit`)
                         }
-
                         variant="ghost"
                         className="justify-normal"
                       >
@@ -398,6 +385,5 @@ const Header: React.FC = () => {
     </div>
   );
 };
-
 
 export default Header;
