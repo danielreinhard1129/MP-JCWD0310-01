@@ -13,11 +13,10 @@ import {
 import useRegisterOrganizer from "@/hooks/api/auth/useRegisterOrganizer";
 import { useFormik } from "formik";
 import { RegisterOrganizerValidationSchema } from "./schemas/RegisterValidationSchema";
-import { useRouter } from "next/navigation";
 
 const RegisterOrganizer: React.FC = () => {
   const { register } = useRegisterOrganizer();
-  const router = useRouter();
+
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
     useFormik({
       initialValues: {
@@ -81,7 +80,7 @@ const RegisterOrganizer: React.FC = () => {
                 />
 
 
-                <Button type="submit" className=" mt-6 w-full text-white" onClick={() => router.push("/")}>
+                <Button type="submit" className=" mt-6 w-full text-white">
                   Register
                 </Button>
               </div>

@@ -24,6 +24,7 @@ export class EventRouter {
           );
           this.router.get('/', this.eventController.getEventsController);
           this.router.get('/:id', this.eventController.getEventController);
+
     };
     getRouter(): Router {
         return this.router;
