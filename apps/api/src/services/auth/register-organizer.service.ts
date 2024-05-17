@@ -1,7 +1,7 @@
 import { hashPassword } from '@/lib/bcrypt';
 import { generateReferral } from '@/lib/referralGenerator';
 import prisma from '@/prisma';
-import { User, Voucher } from '@prisma/client';
+import { User } from '@prisma/client';
 
 interface IRegisterOrganizerArgs
   extends Pick<User, 'email' | 'fullName' | 'password' | 'role'> {}

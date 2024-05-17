@@ -1,4 +1,5 @@
 import { createEventService } from "@/services/admin/create-event.service";
+import { getEventService } from "@/services/admin/get-event.service";
 import { getEventsService } from "@/services/admin/get-events.service";
 import { NextFunction, Request, Response } from "express";
 
@@ -34,6 +35,19 @@ export class EventController {
       return res.status(200).send(result);
     } catch (error) {
       throw (error);
+    }
+  }
+
+  async getEventController(req: Request, res: Response, next: NextFunction) {
+    try {
+      console.log('ini isi event');
+
+      const id = req.params.id;
+      const result = await getEventService(Number(id));
+
+      return res.status(200).send(result);
+    } catch (error) {
+      next(error);
     }
   }
 }
