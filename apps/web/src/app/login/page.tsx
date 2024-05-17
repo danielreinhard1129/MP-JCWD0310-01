@@ -2,12 +2,19 @@
 
 import FormInput from "@/components/FormInput";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import useLogin from "@/hooks/api/auth/useLogin";
 import { useFormik } from "formik";
 import React from "react";
 import { LoginValidationSchema } from "./schemas/LoginValidationSchema";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Login: React.FC = () => {
   const { login } = useLogin();
@@ -25,8 +32,8 @@ const Login: React.FC = () => {
     });
 
   return (
-    <main className="container mx-auto px-4">
-      <div className="mt-16 flex justify-center">
+    <main className="container mx-auto px-4 min-h-screen">
+      <div className="mt-32 flex justify-center">
         <Card className="w-[350px] shadow-xl">
           <CardHeader className="space-y-4">
             <CardTitle className="text-center text-2xl ">Login</CardTitle>
@@ -69,6 +76,14 @@ const Login: React.FC = () => {
               </div>
             </form>
           </CardContent>
+          <CardFooter>
+            <div className="flex justify-start gap-1 text-xs font-extralight">
+              Don't have have an account?
+              <Link href="/register" className="underline">
+                <p> Register</p>
+              </Link>
+            </div>
+          </CardFooter>
         </Card>
       </div>
     </main>

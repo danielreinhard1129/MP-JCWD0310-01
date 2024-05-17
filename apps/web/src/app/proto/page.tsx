@@ -480,8 +480,17 @@ const FormTicket = () => {
       </Dialog>
       </div>
       <Autocomplete/>
-      <div>
-        <Input type="time"/>
+      
+
+      <div className="w-screen bg-marine-200 h-60">
+        <div className="flex flex-row gap-8 justify-center mx-auto">
+          <div className="w-[100px] h-[100px] rounded-full bg-slate-300"></div>
+          <div className="w-[100px] h-[100px] rounded-full bg-slate-300"></div>
+          <div className="w-[100px] h-[100px] rounded-full bg-slate-300"></div>
+          <div className="w-[100px] h-[100px] rounded-full bg-slate-300"></div>
+          <div className="w-[100px] h-[100px] rounded-full bg-slate-300"></div>
+        </div>
+
       </div>
     </div>
   );

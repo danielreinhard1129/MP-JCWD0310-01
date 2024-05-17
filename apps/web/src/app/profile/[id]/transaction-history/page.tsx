@@ -30,7 +30,7 @@ const TransactionHistory = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <section className="px-6 py-10 md:px-36">
+    <section className="px-6 py-10 md:px-36 min-h-screen">
       <div className="flex justify-between">
         <h1 className="text-4xl font-bold">Account Information</h1>
       </div>
@@ -38,7 +38,7 @@ const TransactionHistory = ({ params }: { params: { id: string } }) => {
 
       {/* profile account */}
 
-      <div className="grid grid-cols-5">
+      <div className="grid grid-cols-5 min-h-screen">
         {/* ========SIDEBAR========= */}
         <div className="min-w-full border-r-2">
           <div className="flex h-full flex-col items-center justify-center gap-2 px-4">
