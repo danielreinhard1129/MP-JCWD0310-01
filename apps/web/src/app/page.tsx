@@ -111,7 +111,7 @@ const home = () => {
                     price={event.price}
                     startDate={event.startDate}
                     organizer={event.organizer.fullName}
-                    imageUrl={appConfig.baseURL + /assets${event.thumbnail}}
+                    imageUrl={appConfig.baseURL + `/assets${event.thumbnail}`}
                   />
                 </CarouselItem>
               ))}
@@ -134,7 +134,7 @@ const home = () => {
               price={event.price}
               startDate={event.startDate}
               organizer={event.organizer.fullName}
-              imageUrl={appConfig.baseURL + /assets${event.thumbnail}}
+              imageUrl={appConfig.baseURL + `/assets${event.thumbnail}`}
             />
           ))}
         </div>
