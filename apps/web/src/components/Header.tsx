@@ -67,7 +67,6 @@ const Header: React.FC = () => {
     router.push(link);
   };
 
-
   const logout = () => {
     localStorage.removeItem("token");
     dispatch(logoutAction());
@@ -253,8 +252,6 @@ const Header: React.FC = () => {
                   </SheetTrigger>
                   <SheetContent className="w-[400px]">
                     <SheetHeader>
-
-
                       <SheetTitle>Welcome, {fullName} </SheetTitle>
                     </SheetHeader>
                     <div className="grid gap-4 py-4">
@@ -295,8 +292,6 @@ const Header: React.FC = () => {
                         </Button>
                       ) : null}
 
-
-
                       <SheetFooter>
                         <SheetClose asChild>
                           <Button
@@ -313,11 +308,7 @@ const Header: React.FC = () => {
                   </SheetContent>
                 </Sheet>
               ) : (
-
-             
-
                 <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
-
                   <SheetTrigger asChild>
                     <RxHamburgerMenu className="size-7" />
                   </SheetTrigger>
@@ -333,11 +324,7 @@ const Header: React.FC = () => {
                       <div className="flex items-end justify-center gap-3">
                         <SheetClose asChild>
                           <Button
-
-
                             onClick={() => handleRouterDrawer("/login")}
-
-
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
@@ -346,11 +333,7 @@ const Header: React.FC = () => {
                         </SheetClose>
                         <SheetClose asChild>
                           <Button
-
-
                             onClick={() => handleRouterDrawer("/register")}
-
-
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
@@ -373,13 +356,9 @@ const Header: React.FC = () => {
                         Home
                       </Button>
                       <Button
-
-                      
                         onClick={() =>
                           handleRouterDrawer("/admin/create-event")
                         }
-
-
                         variant="ghost"
                         className="justify-normal"
                       >
@@ -387,11 +366,7 @@ const Header: React.FC = () => {
                         Create Your Event
                       </Button>
                       <Button
-
-    
                         onClick={() => handleRouterDrawer("/event-discover")}
-
-
                         variant="ghost"
                         className="justify-normal"
                       >
@@ -404,7 +379,6 @@ const Header: React.FC = () => {
                         onClick={() =>
                           handleRouterDrawer(`/profile/${id}/edit`)
                         }
-
                         variant="ghost"
                         className="justify-normal"
                       >

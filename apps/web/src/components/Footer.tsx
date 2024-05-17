@@ -10,7 +10,7 @@ import {
   
   const Footer: React.FC = () => {
     return (
-      <footer className="bg-gray-800 text-gray-300 py-8 mt-2 mb-0">
+      <footer className="bg-gray-800 text-gray-300 py-8 mt-2 mb-0 bottom-0 relative">
         <div className="container mx-auto flex flex-col lg:flex-row justify-between items-center">
           {/* Social Media Icons */}
           <div className="flex space-x-4 mb-4 lg:mb-0">

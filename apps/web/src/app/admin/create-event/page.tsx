@@ -10,6 +10,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { IFormEvent } from "@/types/event.type";
 import { createEventValidationSchema } from "./schemas/createEventValidationSchema";
 import { useFormik } from "formik";
+import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
 
 const CreateEventPage = () => {
   const { createEvent } = useCreateEvent();
@@ -203,4 +204,4 @@ const CreateEventPage = () => {
   );
 };
 
-export default CreateEventPage;
+export default AuthGuardOrganizer(CreateEventPage);
