@@ -12,6 +12,7 @@ import { appConfig } from "@/utils/config";
 import Image from "next/image";
 import { useState } from "react";
 
+// dshdbjwada
 const home = () => {
   const [page, setPage] = useState<number>(1);
   const { data: allEvents, } = useGetEvents({page: 1, take: 9}); 
