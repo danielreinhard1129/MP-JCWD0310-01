@@ -61,8 +61,8 @@ const Dashboard = () => {
         data: labels.map(() =>
           faker.datatype.number({ min: -1000, max: 1000 }),
         ),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "#19bdb2",
+        backgroundColor: "#05f2e2",
       },
       {
         label: "Dataset 2",
@@ -79,32 +79,32 @@ const Dashboard = () => {
       {/* =============== DESKTOP ============== */}
       <section className="hidden md:block">
         <div className="my-8 grid grid-cols-5 gap-4 rounded-lg bg-transparent bg-zinc-100 p-4 shadow-inner">
-          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-marine-50 shadow-xl">
+          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-blue-800 shadow-xl">
             <div className="flex h-full flex-col items-center justify-between gap-8 py-24 ">
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
               >
                 <HomeIcon className="mr-2 h-6 w-6" />
                 Home
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
               >
                 <BarChart3 className="mr-2 h-6 w-6" />
                 Analytics
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
               >
                 <Calendar className="mr-2 h-6 w-6" />
                 Events
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
               >
                 <Contact className="mr-2 h-6 w-6" />
                 Profile
@@ -112,7 +112,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="col-span-4 h-[1200px]">
-            <div className="h-full rounded-lg bg-marine-200 px-4 shadow-xl">
+            <div className="h-full rounded-lg bg-marine-100 px-4 shadow-xl">
               <div className="p-8 ">
                 <Line
                   options={options}
@@ -130,43 +130,43 @@ const Dashboard = () => {
       {/* ===================== MOBILE ================== */}
       <section className="block md:hidden">
         <div className="mx-1 my-1 grid grid-cols-7 rounded-lg bg-transparent bg-zinc-100  shadow-inner">
-          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-marine-50 shadow-xl">
+          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-blue-800 shadow-xl">
             <div className="flex h-full flex-col items-center justify-between gap-4 py-48">
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
               >
                 <HomeIcon className="mr-2 h-6 w-6" />
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
               >
                 <BarChart3 className="mr-2 h-6 w-6" />
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
               >
                 <Calendar className="mr-2 h-6 w-6" />
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center text-marine-800 hover:bg-white"
+                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
               >
                 <Contact className="mr-2 h-6 w-6" />
               </Button>
             </div>
           </div>
           <div className="col-span-6 h-[1200px]">
-            <div className="h-full rounded-lg bg-marine-200 px-4 shadow-xl">
+            <div className="h-full rounded-lg bg-marine-100 px-4 shadow-xl">
               <div className="min-h-full object-fill py-8  ">
                 <Line
                   options={options}
                   data={data}
-                  className="rounded-2xl bg-white p-1 shadow-md min-h-60"
+                  className="min-h-96 rounded-2xl bg-white p-1 shadow-md"
                 />
-              <div  className="my-8 h-0.5 bg-white"></div>
+                <div className="my-8 h-0.5 bg-white"></div>
               </div>
             </div>
           </div>

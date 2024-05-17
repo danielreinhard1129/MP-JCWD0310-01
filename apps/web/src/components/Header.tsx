@@ -42,12 +42,10 @@ import { debounce } from "lodash";
 import AsyncSelect from "react-select/async";
 import { appConfig } from "@/utils/config";
 
-  
 interface EventOption {
   value: number;
   label: string;
 }
-
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -68,12 +66,10 @@ const Header: React.FC = () => {
     router.push(link);
   };
 
-
   const logout = () => {
     localStorage.removeItem("token");
     dispatch(logoutAction());
   };
-
 
   const loadOptions = (
     inputValue: string,
@@ -143,12 +139,14 @@ const Header: React.FC = () => {
                 </Badge>
 
                 {Boolean(id) ? (
-
                   <div>
-                    <Button
+                    {/* <Button
                       onClick={logout}
-
-                  <div>
+                      variant="ghost"
+                      className="mx-1  text-white"
+                    >
+                      Logout
+                    </Button> */}
                     <DropdownMenu
                       open={openDropdown}
                       onOpenChange={setOpenDropdown}
@@ -182,23 +180,10 @@ const Header: React.FC = () => {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-
                   </div>
                 ) : (
                   <div>
                     <Button
-                      onClick={() => router.push("/login")}
-
-                      variant="ghost"
-                      className="mx-1  text-white"
-                    >
-                      Logout
-                    </Button>
-                  </div>
-                ) : (
-                  <div>
-                    <Button
-
                       onClick={() => router.push("/login")}
                       variant="ghost"
                       className="mx-1 text-white"
@@ -206,12 +191,10 @@ const Header: React.FC = () => {
                       <Link href="/login">Login</Link>
                     </Button>
                     <Button
-
                       onClick={() => router.push("/register")}
                       variant="ghost"
                       className="mx-1 text-white"
                     >
-
                       Register
                     </Button>
                   </div>
@@ -230,19 +213,14 @@ const Header: React.FC = () => {
                     <SheetHeader>
                       <SheetTitle>Find Your Event </SheetTitle>
                       <SheetDescription>
-                        <div className="w-[350px] rounded-md px-3 py-1 focus:border-blue-500 focus:outline-none">
-                          <AsyncSelect
-                            placeholder="Search for event"
-                            
-                            loadOptions={debounceLoadOptions}
-                            isLoading={isLoading}
-                            onChange={(event) => {
-                              router.push(
-                                appConfig.baseUrlNext + `/${event?.value}`,
-                              );
-                            }}
-                          />
-                        </div>
+                        <input
+                          type="text"
+                          placeholder="Search"
+                          className="w-[350px] rounded-md border border-gray-300 px-3 py-1 focus:border-blue-500 focus:outline-none"
+                        />
+                        <span className="absolute right-7 top-1/2 -translate-y-1/2 transform">
+                          <FaSearch />
+                        </span>
                       </SheetDescription>
                     </SheetHeader>
                     <div className="grid gap-4 py-4"></div>
@@ -259,18 +237,12 @@ const Header: React.FC = () => {
             <div className="sm:block lg:hidden">
               {/* Mobile navigation */}
               {Boolean(id) ? (
-
-
                 <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
-
-
                   <SheetTrigger asChild>
                     <RxHamburgerMenu className="size-7" />
                   </SheetTrigger>
                   <SheetContent className="w-[400px]">
                     <SheetHeader>
-
-
                       <SheetTitle>Welcome, {fullName} </SheetTitle>
                     </SheetHeader>
                     <div className="grid gap-4 py-4">
@@ -311,8 +283,6 @@ const Header: React.FC = () => {
                         </Button>
                       ) : null}
 
-
-
                       <SheetFooter>
                         <SheetClose asChild>
                           <Button
@@ -329,11 +299,7 @@ const Header: React.FC = () => {
                   </SheetContent>
                 </Sheet>
               ) : (
-
-             
-
                 <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
-
                   <SheetTrigger asChild>
                     <RxHamburgerMenu className="size-7" />
                   </SheetTrigger>
@@ -349,11 +315,7 @@ const Header: React.FC = () => {
                       <div className="flex items-end justify-center gap-3">
                         <SheetClose asChild>
                           <Button
-
-
                             onClick={() => handleRouterDrawer("/login")}
-
-
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
@@ -362,11 +324,7 @@ const Header: React.FC = () => {
                         </SheetClose>
                         <SheetClose asChild>
                           <Button
-
-
                             onClick={() => handleRouterDrawer("/register")}
-
-
                             className="w-[150px] bg-marine-500"
                             type="submit"
                           >
@@ -389,13 +347,9 @@ const Header: React.FC = () => {
                         Home
                       </Button>
                       <Button
-
-                      
                         onClick={() =>
                           handleRouterDrawer("/admin/create-event")
                         }
-
-
                         variant="ghost"
                         className="justify-normal"
                       >
@@ -403,31 +357,23 @@ const Header: React.FC = () => {
                         Create Your Event
                       </Button>
                       <Button
-
-    
                         onClick={() => handleRouterDrawer("/event-discover")}
-
-
                         variant="ghost"
                         className="justify-normal"
                       >
                         <CompassIcon className="mr-2 h-4 w-4" />
                         Event Discover
-
-                      
                       </Button>
                       <Button
                         onClick={() =>
                           handleRouterDrawer(`/profile/${id}/edit`)
                         }
-
                         variant="ghost"
                         className="justify-normal"
                       >
                         <UserRound className="mr-2 h-4 w-4" />
                         Profile
                       </Button>
-
                     </div>
                   </SheetContent>
                 </Sheet>

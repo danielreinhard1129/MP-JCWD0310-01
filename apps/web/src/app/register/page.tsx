@@ -13,6 +13,7 @@ import {
 import useRegister from "@/hooks/api/auth/useRegister";
 import { useFormik } from "formik";
 import { RegisterValidationSchema } from "./schemas/RegisterValidationSchema";
+import Link from "next/link";
 
 const Register: React.FC = () => {
   const { register } = useRegister();
@@ -33,12 +34,14 @@ const Register: React.FC = () => {
   console.log("============", errors);
 
   return (
-    <main className="container mx-auto px-4">
-      <div className="mt-16 flex justify-center">
+    <main className="container mx-auto px-4 min-h-screen my-auto">
+      <div className="mt-12 flex justify-center">
         <Card className="w-[350px] shadow-xl">
           <CardHeader className="space-y-4">
             <CardTitle className="text-center text-2xl ">Sign-Up!</CardTitle>
-            <CardDescription>Sign-up and and start enjoying the show! </CardDescription>
+            <CardDescription>
+              Sign-up and and start enjoying the show!{" "}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit}>
@@ -97,8 +100,19 @@ const Register: React.FC = () => {
               </div>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-end">
-            {/* <Button className=" text-white">Register</Button> */}
+          <CardFooter className="flex flex-col items-start gap-1">
+            <div className="flex justify-start gap-1 text-xs font-extralight">
+              Already have an account?
+              <Link href="/login" className="underline">
+                <p> Login</p>
+              </Link>
+            </div>
+            <div className="flex justify-start gap-1 text-xs font-extralight">
+              Want to sign up as an organizer instead?
+              <Link href="/register-organizer" className="underline">
+                <p>Register</p>
+              </Link>
+            </div>
           </CardFooter>
         </Card>
       </div>

@@ -74,7 +74,7 @@ const ProfileDetail = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <section className="px-6 py-10 md:px-36">
+    <section className="px-6 py-10 md:px-36 min-h-screen">
       <div className="flex justify-between">
         <h1 className="text-4xl font-bold">Account Information</h1>
       </div>
@@ -82,7 +82,7 @@ const ProfileDetail = ({ params }: { params: { id: string } }) => {
 
       {/* profile account */}
 
-      <div className="grid grid-cols-5">
+      <div className="grid grid-cols-5 min-h-screen">
         {/* ========SIDEBAR========= */}
         <div className="min-w-full border-r-2">
           <div className="flex h-full flex-col items-center justify-center gap-2 px-4">
@@ -118,7 +118,7 @@ const ProfileDetail = ({ params }: { params: { id: string } }) => {
           <div className="flex flex-col justify-center gap-4 p-2">
             <div className=" text-lg font-semibold">Edit Profile</div>
             <div className="flex md:flex-row md:gap-8">
-              <div className="flex flex-col gap-7 md:w-auto md:py-4">
+              <div className="flex flex-col gap-[48px] md:w-auto md:mt-7">
                 <div>First Name: </div>
                 <div>Last Name: </div>
                 <div>Phone Number: </div>
@@ -127,7 +127,7 @@ const ProfileDetail = ({ params }: { params: { id: string } }) => {
               </div>
               <div>
                 <form onSubmit={handleSubmit} className="min-w-[400px]">
-                  <div className="flex w-full flex-col gap-[7px] md:w-auto">
+                  <div className="flex w-full flex-col gap-1 md:w-auto ">
                     <FormInput
                       name="firstName"
                       type="text"
@@ -180,7 +180,7 @@ const ProfileDetail = ({ params }: { params: { id: string } }) => {
                       value={values.gender}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      className="mt-2 h-8 border"
+                      className="mt-4 h-8 border"
                       style={{ display: "block" }}
                     >
                       <option value="MALE" label="Male">
