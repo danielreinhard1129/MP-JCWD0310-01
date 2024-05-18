@@ -1,25 +1,21 @@
 export interface IEventAgr {
-    userId?: number, 
-    title: string;
-    category: string;
-    place: string;
-    city: string;
-    province: string;
-    address: string;
-    description: string;
-    thumbnail: string;
-    startDate: Date;
-    endDate: Date;
-    time: string;
-    ticket: string;
-    ticketName: string;
-    ticketPrice: number;
-    ticketCategory: string;
-    availableSeats: number;
-    ticketStart: Date;
-    ticketExpires: Date;
-    voucherTitle?: string;
-    voucherLimit?: number;
-    voucherDiscount?: number;
-    voucherExpires?: Date;
-  }
+  organizerId?: number;
+  title: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  address: string;
+  city: string;
+  limit: number;
+  booked?: number;
+  thumbnail: string;
+  category: string;
+  price: number;
+  deletedAt?: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  discountName?: string;
+  discountLimit?: number;
+  discountValue?: number;
+  discountExpires?: Date;
+}
