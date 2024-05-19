@@ -2,38 +2,49 @@ import { IEvent } from "./event.type";
 import { ITransactionDetail } from "./transaction.type";
 import { IUser } from "./user.type";
 
-export interface IVoucher {
+export interface Reward {
   id: number;
   title: string;
   discountValue: number;
-  voucherType: string;
   createdAt: Date;
   expiredDate: Date;
-  limit?: number | null;
-  used?: number | null;
-  UserVoucher: IUserVoucher[];
-  EventVoucher: IEventVoucher[];
+  UserReward: UserReward[];
 }
 
-export interface IUserVoucher {
+export interface UserReward {
   id: number;
-  voucherId: number;
+  rewardId: number;
   userId: number;
+  isUsed: boolean;
   user: IUser;
-  voucher: IVoucher;
-  TransactionDetail?: ITransactionDetail;
+  reward: Reward;
+  TransactionDetail: ITransactionDetail;
 }
 
-export interface IEventVoucher {
+export interface Discount {
   id: number;
-  voucherId: number;
+  name: string;
+  discountValue: number;
+  createdAt: Date;
+  expires: Date;
+  limit: number;
+  used: number;
   eventId: number;
-  voucher: IVoucher;
-  event: IEvent;
+  event: Event;
+  UserDiscount: UserDiscount[];
+}
+
+export interface UserDiscount {
+  id: number;
+  discountId: number;
+  userId: number;
+  isUsed: boolean;
+  discount: Discount;
+  user: IUser;
   TransactionDetail?: ITransactionDetail;
 }
 
-export interface IPoint {
+export interface Point {
   id: number;
   totalPoints: number;
   updatedAt: Date;

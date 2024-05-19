@@ -1,16 +1,16 @@
 import prisma from '@/prisma';
-import { Event } from '@prisma/client';
-
+import { IEventAgr } from '@/types/event.type';
+import { Event, Discount } from '@prisma/client';
 
 interface createEventBody
   extends Omit<Event, 'deletedAt' | 'createdAt' | 'updatedAt' | 'thumbnail'> {}
 
 export const createEventService = async (
-  body: createEventBody,
+  body: IEventAgr,
   file: Express.Multer.File,
 ) => {
   try {
-    const { title, organizerId, limit, price, startDate, endDate } = body;
+    const { title, organizerId, description, limit, startDate, endDate, price, discountName, discountValue, discountLimit, discountExpires } = body;
 
     const existingTitle = await prisma.event.findFirst({
       where: { title },
@@ -28,9 +28,13 @@ export const createEventService = async (
       throw new Error('user is not found');
     }
 
-    return await prisma.event.create({
+    const createdEvent = await prisma.event.create({
       data: {
-        ...body,
+        title: title,
+        address: body.address,
+        category: body.category,
+        city: body.city,
+        description: description,
         thumbnail: `/images/${file.filename}`,
         organizerId: Number(organizerId),
         startDate: new Date(startDate),
@@ -39,7 +43,27 @@ export const createEventService = async (
         limit: Number(limit),
       },
     });
+
+    let createdDiscount = null;
+
+    if (discountName && discountValue && discountLimit && discountExpires) {
+      createdDiscount = await prisma.discount.create({
+        data: {
+          name: discountName,
+          discountValue: Number(discountValue),
+          limit: Number(discountLimit),
+          expires: new Date(discountExpires),
+          eventId: createdEvent.id,
+        },
+      });
+    }
+
+    return {
+      event: createdEvent,
+      discount: createdDiscount,
+    };
   } catch (error) {
     throw error;
+    
   }
 };
