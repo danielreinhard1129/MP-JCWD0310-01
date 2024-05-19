@@ -208,7 +208,7 @@ model Transaction {
   id           Int               @id @default(autoincrement())
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
-  status       StatusTransaction @default(PENDING)
+  status       StatusTransaction @default(OPENED)
   total        Int
   userId       Int
   eventId      Int               @unique
@@ -222,9 +222,10 @@ model Transaction {
 }
 
 enum StatusTransaction {
+  OPENED
   PENDING
   COMPLETE
-  ERROR
+  EXPIRED
   CANCELLED
 }
 

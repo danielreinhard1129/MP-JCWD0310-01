@@ -1,19 +1,20 @@
+import cors from 'cors';
 import express, {
-  json,
-  urlencoded,
   Express,
+  NextFunction,
   Request,
   Response,
-  NextFunction,
-  static as static_
+  json,
+  static as static_,
+  urlencoded
 } from 'express';
-import cors from 'cors';
-import { PORT } from './config';
-import { SampleRouter } from './routers/sample.router';
-import { AuthRouter } from './routers/auth.router';
-import { UserRouter } from './routers/user.router';
-import { EventRouter } from './routers/event.router';
 import { join } from 'path';
+import { PORT } from './config';
+import { AuthRouter } from './routers/auth.router';
+import { EventRouter } from './routers/event.router';
+import { SampleRouter } from './routers/sample.router';
+import { TransactionRouter } from './routers/transaction.router';
+import { UserRouter } from './routers/user.router';
 
 export default class App {
   private app: Express;
@@ -60,6 +61,7 @@ export default class App {
     const authRouter = new AuthRouter();
     const userRouter = new UserRouter();
     const eventRouter = new EventRouter();
+    const transactionRouter = new TransactionRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
@@ -69,6 +71,7 @@ export default class App {
     this.app.use('/api/auth', authRouter.getRouter());
     this.app.use('/api/users', userRouter.getRouter());
     this.app.use('/api/events', eventRouter.getRouter());
+    this.app.use('/api/transactions', transactionRouter.getRouter());
   }
 
   public start(): void {

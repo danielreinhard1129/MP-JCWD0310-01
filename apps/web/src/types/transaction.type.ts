@@ -1,7 +1,27 @@
-import { ITicketType } from "./event.type";
+import { IEvent, ITicketType } from "./event.type";
 import { IUser } from "./user.type";
 import { IEventVoucher, IPoint, IUserVoucher } from "./voucher.type";
 
+export interface TRX {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  status: string;
+  total: number;
+  userId: number;
+  eventId: number;
+  paymentProof?: string;
+  event: IEvent;
+  user: IUser;
+}
+
+export enum IStatusTransaction {
+  OPENED = 'OPENED',
+  PENDING = 'PENDING',
+  COMPLETE = 'COMPLETE',
+  EXPIRED = 'EXPIRED',
+  CANCELLED = 'CANCELLED',
+}
 export interface ITransaction {
   id: number;
   createdAt: Date;

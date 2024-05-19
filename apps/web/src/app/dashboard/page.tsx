@@ -16,8 +16,15 @@ import { faker } from "@faker-js/faker";
 
 import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
 import { Separator } from "@/components/ui/separator";
-import { BarChart3, Calendar, Contact, Home as HomeIcon } from "lucide-react";
+import {
+  BarChart3,
+  Calendar,
+  Contact,
+  Home as HomeIcon,
+  TicketCheck,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   ChartJS.register(
@@ -74,46 +81,46 @@ const Dashboard = () => {
       },
     ],
   };
+  const router = useRouter();
   return (
-    <main className="md:container md:mx-auto">
+    <main className=" min-w-full md:m-0">
       {/* =============== DESKTOP ============== */}
-      <section className="hidden md:block">
-        <div className="my-8 grid grid-cols-5 gap-4 rounded-lg bg-transparent bg-zinc-100 p-4 shadow-inner">
-          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-blue-800 shadow-xl">
-            <div className="flex h-full flex-col items-center justify-between gap-8 py-24 ">
+      <section className="">
+        <div className="my-0 flex gap-4 rounded-lg bg-transparent bg-zinc-100 shadow-inner">
+          <div className="sticky top-0 h-screen w-[250px] bg-marine-400 shadow-sm">
+            <div className="flex h-full flex-col items-center gap-2 py-20">
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
+                onClick={() => router.push("/dashboard")}
+                className="h-16 w-full justify-start rounded-none pl-8 text-violet-100 hover:bg-zinc-200 hover:shadow-inner"
               >
                 <HomeIcon className="mr-2 h-6 w-6" />
                 Home
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
+                onClick={() => router.push("/dashboard/transactions")}
+                className="h-16 w-full justify-start rounded-none pl-8 text-violet-100 hover:bg-zinc-200 hover:shadow-inner"
               >
-                <BarChart3 className="mr-2 h-6 w-6" />
-                Analytics
+                <TicketCheck className="mr-2 h-6 w-6" />
+                Transactions
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
+                onClick={() => router.push("/dashboard/event-list")}
+                className="h-16 w-full justify-start rounded-none pl-8 text-violet-100 hover:bg-zinc-200 hover:shadow-inner"
               >
                 <Calendar className="mr-2 h-6 w-6" />
                 Events
               </Button>
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <Contact className="mr-2 h-6 w-6" />
-                Profile
-              </Button>
             </div>
           </div>
-          <div className="col-span-4 h-[1200px]">
-            <div className="h-full rounded-lg bg-marine-100 px-4 shadow-xl">
-              <div className="p-8 ">
+          <div className="h-[1200px] w-5/6">
+            <div className="mt-8 h-full bg-transparent px-4">
+              <div className="mb-4 flex justify-between px-2">
+                <h1 className="text-4xl font-bold">Organizer Dashboard</h1>
+              </div>
+              <div className="mt-2 p-2">
                 <Line
                   options={options}
                   data={data}
@@ -126,53 +133,6 @@ const Dashboard = () => {
         </div>
       </section>
       {/* ============ END DESKTOP ============= */}
-
-      {/* ===================== MOBILE ================== */}
-      <section className="block md:hidden">
-        <div className="mx-1 my-1 grid grid-cols-7 rounded-lg bg-transparent bg-zinc-100  shadow-inner">
-          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-blue-800 shadow-xl">
-            <div className="flex h-full flex-col items-center justify-between gap-4 py-48">
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <HomeIcon className="mr-2 h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <BarChart3 className="mr-2 h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <Calendar className="mr-2 h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <Contact className="mr-2 h-6 w-6" />
-              </Button>
-            </div>
-          </div>
-          <div className="col-span-6 h-[1200px]">
-            <div className="h-full rounded-lg bg-marine-100 px-4 shadow-xl">
-              <div className="min-h-full object-fill py-8  ">
-                <Line
-                  options={options}
-                  data={data}
-                  className="min-h-96 rounded-2xl bg-white p-1 shadow-md"
-                />
-                <div className="my-8 h-0.5 bg-white"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* ============= END MOBILE ===================== */}
     </main>
   );
 };

@@ -9,3 +9,10 @@ export interface ITransactionArgs {
 
 
 }
+export enum Status {
+    OPENED = 'OPENED',
+    PENDING = 'PENDING',
+    COMPLETE = 'COMPLETE',
+    EXPIRED = 'EXPIRED',
+    CANCELLED = 'CANCELLED',
+  }
