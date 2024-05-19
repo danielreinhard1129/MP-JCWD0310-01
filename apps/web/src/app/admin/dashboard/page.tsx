@@ -12,14 +12,57 @@ import {
 import { Line } from "react-chartjs-2";
 // import faker from 'faker';
 
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 
 import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
 import { Separator } from "@/components/ui/separator";
-import { BarChart3, Calendar, Contact, Home as HomeIcon } from "lucide-react";
+import {
+  BarChart3,
+  Calendar,
+  Contact,
+  Home as HomeIcon,
+  TicketCheck,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import useGetTransactionsByOrganizer from "@/hooks/api/transactions/useGetTransactionsByOrganizer";
+import { useAppSelector } from "@/redux/hooks";
+import { IStatusTransaction, TRX } from "@/types/transaction.type";
+// import {
+//   LineChart,
+//   Line,
+//   CartesianGrid,
+//   XAxis,
+//   YAxis,
+//   ResponsiveContainer,
+// } from "recharts";
+
+interface SortedArray {
+  date: string;
+  total: number;
+  count: number
+}
+
+interface DataProps {
+  name: string;
+  data: {
+    title: string;
+    name: string;
+    value: number;
+  }[];
+}
 
 const Dashboard = () => {
+  const { id } = useAppSelector((state) => state.user);
+  const { data: transactions } = useGetTransactionsByOrganizer({
+    id,
+    sortBy: "createdAt",
+    sortOrder: "asc",
+    status: IStatusTransaction.COMPLETE,
+  });
+
+  console.log(transactions);
+
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -38,87 +81,156 @@ const Dashboard = () => {
       },
       title: {
         display: true,
-        text: "Chart.js Line Chart",
+        text: "Daily Revenue",
+      },
+    },
+    scales: {
+      x: {
+        // type: 'line',
+        time: {
+          unit: "day",
+          tooltipFormat: "PP",
+        },
+        title: {
+          display: true,
+          text: "Date",
+        },
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          // text: "Total Amount",
+        },
       },
     },
   };
+  const aggregateTransactionsByDay = (transactions: TRX[]) => {
+    const dailyTotals = transactions.reduce((acc: any, transaction) => {
+      const date = new Date(transaction.createdAt).toISOString().split("T")[0];
+      if (!acc[date]) {
+        acc[date] = { date: date, total: 0 , count: 0};
+      }
+      acc[date].total += transaction.total;
+      acc[date].count += 1;
+      return acc;
+    }, {});
 
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+    return Object.values(dailyTotals);
+  };
+  const result: any = aggregateTransactionsByDay(transactions);
+
+  const sortedArray: SortedArray[] = result.sort(
+    (a: SortedArray, b: SortedArray) =>
+      Number(new Date(a.date)) - Number(new Date(b.date)),
+  );
+
+  console.log(" ini totalSortedArray", sortedArray);
+
+  const labels = sortedArray.map((transaction) =>
+    new Date(transaction.date).getDate(),
+  );
+  const newDate = new Date().getDate();
+
+  const arr = [];
+
+  for (let i = 1; i < 8; i++) {
+    arr.push(newDate - 7 + i);
+  }
+
+  // console.log(arr);
+
+  const totals = sortedArray.map((transaction) => transaction.total);
+  const counts = sortedArray.map((transaction) => transaction.count);
 
   const data = {
-    labels,
+    labels: labels,
     datasets: [
       {
-        label: "Dataset 1",
-        data: labels.map(() =>
-          faker.datatype.number({ min: -1000, max: 1000 }),
-        ),
-        borderColor: "#19bdb2",
-        backgroundColor: "#05f2e2",
+        label: "Total Amount",
+        data: totals,
+        fill: false,
+        backgroundColor: "#b31b10",
+        borderColor: "#eb4034",
+        borderWidth: 1,
+        tension: 0.1,
       },
       {
-        label: "Dataset 2",
-        data: labels.map(() =>
-          faker.datatype.number({ min: -1000, max: 1000 }),
-        ),
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        label: "Total Transactions",
+        data: counts,
+        fill: false,
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "#1051b3",
+        borderWidth: 1,
+        tension: 0.1,
       },
     ],
   };
+  const router = useRouter();
   return (
-    <main className="md:container md:mx-auto">
+    <main className=" min-w-full md:m-0">
       {/* =============== DESKTOP ============== */}
-      <section className="hidden md:block">
-        <div className="my-8 grid grid-cols-5 gap-4 rounded-lg bg-transparent bg-zinc-100 p-4 shadow-inner">
-          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-blue-800 shadow-xl">
-            <div className="flex h-full flex-col items-center justify-between gap-8 py-24 ">
+      <section className="">
+        <div className="my-0 flex gap-4 rounded-lg bg-transparent bg-zinc-100 shadow-inner">
+          <div className="sticky top-0 h-screen w-[250px] bg-marine-400 shadow-sm">
+            <div className="flex h-full flex-col items-center gap-2 py-20">
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
+                onClick={() => router.push("/dashboard")}
+                className="h-16 w-full justify-start rounded-none pl-8 text-violet-100 hover:bg-zinc-200 hover:shadow-inner"
               >
                 <HomeIcon className="mr-2 h-6 w-6" />
                 Home
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
+                onClick={() => router.push("/dashboard/transactions")}
+                className="h-16 w-full justify-start rounded-none pl-8 text-violet-100 hover:bg-zinc-200 hover:shadow-inner"
               >
-                <BarChart3 className="mr-2 h-6 w-6" />
-                Analytics
+                <TicketCheck className="mr-2 h-6 w-6" />
+                Transactions
               </Button>
               <Button
                 variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
+                onClick={() => router.push("/dashboard/event-list")}
+                className="h-16 w-full justify-start rounded-none pl-8 text-violet-100 hover:bg-zinc-200 hover:shadow-inner"
               >
                 <Calendar className="mr-2 h-6 w-6" />
                 Events
               </Button>
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <Contact className="mr-2 h-6 w-6" />
-                Profile
-              </Button>
             </div>
           </div>
-          <div className="col-span-4 h-[1200px]">
-            <div className="h-full rounded-lg bg-marine-100 px-4 shadow-xl">
-              <div className="p-8 ">
+          <div className="h-[1200px] w-5/6">
+            <div className="mt-8 h-full bg-transparent px-4">
+              <div className="mb-4 flex justify-between px-2">
+                <h1 className="text-4xl font-bold">Organizer Dashboard</h1>
+              </div>
+              <div className="mt-2 p-2">
                 <Line
                   options={options}
                   data={data}
                   className="rounded-2xl bg-white p-2 shadow-md"
                 />
+                {/* <ResponsiveContainer>
+                  <LineChart
+                    width={600}
+                    height={300}
+                    data={sortedArray}
+                    margin={{ top: 5, right: 20, bottom: 5, left: 10 }}
+                  >
+                    <Line
+                      type="monotone"
+                      dataKey="total"
+                      stroke="#8884d8"
+                      activeDot={{ r: 8 }}
+                    />
+                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                    <XAxis dataKey="date" />
+                    <YAxis dataKey="" />
+                    <Tooltip/>
+                    <Legend/>
+                  </LineChart>
+                </ResponsiveContainer> */}
               </div>
               <Separator className="my-8 h-0.5 bg-white" />
             </div>
@@ -126,53 +238,6 @@ const Dashboard = () => {
         </div>
       </section>
       {/* ============ END DESKTOP ============= */}
-
-      {/* ===================== MOBILE ================== */}
-      <section className="block md:hidden">
-        <div className="mx-1 my-1 grid grid-cols-7 rounded-lg bg-transparent bg-zinc-100  shadow-inner">
-          <div className="sticky top-0 col-span-1 h-screen min-w-full rounded-lg bg-blue-800 shadow-xl">
-            <div className="flex h-full flex-col items-center justify-between gap-4 py-48">
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <HomeIcon className="mr-2 h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <BarChart3 className="mr-2 h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <Calendar className="mr-2 h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="h-24 w-full justify-center rounded-none text-violet-100 hover:bg-white"
-              >
-                <Contact className="mr-2 h-6 w-6" />
-              </Button>
-            </div>
-          </div>
-          <div className="col-span-6 h-[1200px]">
-            <div className="h-full rounded-lg bg-marine-100 px-4 shadow-xl">
-              <div className="min-h-full object-fill py-8  ">
-                <Line
-                  options={options}
-                  data={data}
-                  className="min-h-96 rounded-2xl bg-white p-1 shadow-md"
-                />
-                <div className="my-8 h-0.5 bg-white"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* ============= END MOBILE ===================== */}
     </main>
   );
 };

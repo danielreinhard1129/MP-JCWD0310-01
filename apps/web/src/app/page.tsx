@@ -15,6 +15,7 @@ import { appConfig } from "@/utils/config";
 import Image from "next/image";
 import { useState } from "react";
 
+
 const home = () => {
   const { id } = useAppSelector((state) => state.user);
   const [page, setPage] = useState<number>(1);
