@@ -13,7 +13,7 @@ export class TransactionController {
             id: parseInt(req.query.id as string),
             take: parseInt(req.query.take as string) || 8,
             page: parseInt(req.query.page as string) || 1,
-            sortBy: (req.query.sortBy as string) || 'createdAt',
+            sortBy: (req.query.sortBy as string) || 'updatedAt',
             sortOrder: (req.query.sortOrder as string) || 'desc',
             search: req.query.search as string ||"",
             status: req.query.status as Status,

@@ -115,12 +115,12 @@ model Event {
   deletedAt    DateTime?
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-  // location     Location       @relation(fields: [locationId], references: [id])
-  // category     Category       @relation(fields: [categoryId], references: [id])
+
+  
   TicketType   TicketType[]
   EventVoucher EventVoucher[]
   Review       Review?
-  Transaction  Transaction?
+  Transaction  Transaction[]
 
   @@map("events")
 }
@@ -211,7 +211,7 @@ model Transaction {
   status       StatusTransaction @default(OPENED)
   total        Int
   userId       Int
-  eventId      Int               @unique
+  eventId      Int               
   paymentProof String?
 
   user              User               @relation(fields: [userId], references: [id])

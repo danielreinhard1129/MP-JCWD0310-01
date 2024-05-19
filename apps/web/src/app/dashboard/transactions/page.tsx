@@ -19,27 +19,34 @@ import { useAppSelector } from "@/redux/hooks";
 import useGetTransactionsByOrganizer from "@/hooks/api/transactions/useGetTransactionsByOrganizer";
 import { IStatusTransaction } from "@/types/transaction.type";
 import Pagination from "@/components/pagination";
+import useGetTransactionsPending from "@/hooks/api/transactions/useGetTransactionsPending";
 
 const Transactions = () => {
   const router = useRouter();
   const [page, setPage] = useState<number>(1);
-  const [txStatus, setTxStatus] = useState<IStatusTransaction | null>();
+  const [pagePending, setPagePending] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
   const { data: transactions, meta } = useGetTransactionsByOrganizer({
     id,
-    page: 1,
-    take: 3,
-    // {txStatus?status:txStatus}:null}
+    page,
+    take: 5,
+    
   });
-  console.log(transactions);
+
+  const { data: pendingTx, meta: pendingMeta } = useGetTransactionsPending({
+    id,
+    page: pagePending,
+    take: 5,
+    status: IStatusTransaction.PENDING,
+  });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
   };
+  const handleChangePaginatePending = ({ selected }: { selected: number }) => {
+    setPagePending(selected + 1);
+  };
 
-  const pendingTx = transactions.filter(
-    (trx) => trx.status === IStatusTransaction.PENDING,
-  );
 
   return (
     <main className=" min-w-full md:m-0">
@@ -84,26 +91,24 @@ const Transactions = () => {
                   <TabsList className=" mx-2 my-2 flex h-full w-1/3 justify-start gap-2 p-0 shadow-inner">
                     <TabsTrigger
                       value="onGoing"
-                      onClick={() => () => setTxStatus(null)}
                       className="h-12 w-1/2 rounded-r-none shadow-none"
                     >
                       Waiting for Approval
                     </TabsTrigger>
                     <TabsTrigger
                       value="all"
-                      //   onClick={()=>()=>setTxStatus(IStatusTransaction.PENDING)}
                       className="h-12 w-1/2 rounded-l-none shadow-none"
                     >
                       Transactions List
                     </TabsTrigger>
                   </TabsList>
-                  
+
                   <TabsContent value="onGoing">
                     <div className="flex justify-end">
                       <Pagination
-                        total={meta?.total || 0}
-                        take={meta?.take || 0}
-                        onChangePage={handleChangePaginate}
+                        total={pendingMeta?.total || 0}
+                        take={pendingMeta?.take || 0}
+                        onChangePage={handleChangePaginatePending}
                       />
                     </div>
                     <Table>
