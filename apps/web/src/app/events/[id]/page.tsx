@@ -1,24 +1,28 @@
 "use client";
 
+import CustomBreadcrumb from "@/components/Breadcrumb";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useGetEvent from "@/hooks/api/admin/useGetEvent";
+import useGetUser from "@/hooks/api/users/useGetUser";
 import { appConfig } from "@/utils/config";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound, useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { IoCalendarOutline } from "react-icons/io5";
-import { IoMdTime } from "react-icons/io";
+import { useState } from "react";
 import { FiMapPin } from "react-icons/fi";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import CustomBreadcrumb from "@/components/Breadcrumb";
-
+import { IoMdTime } from "react-icons/io";
+import { IoCalendarOutline } from "react-icons/io5";
+import TransactionForm from "./components/TransactionForm";
 
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const { event, isLoading } = useGetEvent(Number(params.id));
+  const { user } = useGetUser(Number(params.id));
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
+  console.log(user?.user.email);
 
   if (isLoading) {
     return (
@@ -38,12 +42,16 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
 
   const eventDetailBreadcrumb = [
     { label: "Home", href: "/" },
-    { label: "Category", href: `/category/${event.categoryId}` },
+    { label: "Category", href: `/category/${event.category}` },
     { label: `....`, href: `${event.id}` },
   ];
 
+  const today = new Date();
+  const endDate = new Date(event.endDate);
+  const isEventEnded = today > endDate;
+
   return (
-    <main className="container mx-auto px-4">
+    <main className="container mx-auto bg-marine-50 px-4">
       <CustomBreadcrumb paths={eventDetailBreadcrumb} />
       <section className="mb-4 mt-2 lg:mx-12">
         <div className="mb-4 gap-3 space-y-1.5 lg:grid lg:grid-cols-6 lg:gap-8">
@@ -53,19 +61,25 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 fill
                 src={`${appConfig.baseURL}/assets${event.thumbnail}`}
                 alt="thumbnail image"
-                className="rounded-xl bg-slate-200 object-cover"
+                className="rounded-xl bg-slate-200 object-cover md:p-1.5"
               />
             </div>
           </div>
 
-          <div className="relative lg:col-span-2">
+          <div className="relative bg-slate-50 lg:col-span-2">
             <div className="flex w-full flex-col gap-8 rounded-lg border p-3 shadow-md md:p-4">
               <div className="flex flex-col gap-6">
                 <h2 className="text-lg font-bold">{event.title}</h2>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <div className="flex gap-3">
-                    <Badge className="p-bold-20 rounded-full bg-marine-300 px-5 py-2 text-marine-700">
-                      {event.price === 0 ? "Free" : `IDR.${event.price}`}
+                    <Badge
+                      className={`p-bold-20 rounded-xl px-5 text-lg ${isEventEnded ? "text-red-600" : "bg-marine-300 text-marine-700"}`}
+                    >
+                      {isEventEnded
+                        ? "Event Ended"
+                        : event.price === 0
+                          ? "Free"
+                          : `IDR.${event.price}`}
                     </Badge>
                     <Badge className="p-medium-16 rounded-full bg-slate-200 px-4 py-2.5 text-slate-600">
                       {event.category}
@@ -124,14 +138,14 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
         </div>
       </section>
       {/* DESCRIPTION AND */}
-      <section className="mb-4 mt-5 lg:mx-12">
-        <div className=" mb-4 space-y-1.5 flex flex-col lg:grid lg:grid-cols-6 lg:gap-8">
+      <section className="mb-4 mt-5 lg:mx-12 lg:h-[700px]">
+        <div className=" mb-4 flex flex-col space-y-1.5 lg:grid lg:grid-cols-6 lg:gap-8">
           <div className="h-[400px] lg:col-span-4">
             <div className=" flex flex-col gap-3">
               <p className="p-bold-20 text-grey-600 text-md pl-6">
                 Description:
               </p>
-              <div className="">
+              <div className="rounded-md border bg-marine-50 shadow-md">
                 <p
                   className="lg:p-regular-18 block p-6 lg:hidden"
                   onClick={toggleDescription}
@@ -151,12 +165,20 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
           <div className=" lg:col-span-2">
             <div className="rounded-lg border p-4 shadow-md">
               <div className="flex justify-center  ">
-                <button
-                  onClick={() => router.push("/transaction")}
-                  className=" w-full rounded-lg bg-blue-600 py-2 text-white shadow-md lg:w-[350px]"
-                >
-                  Get a Ticket
-                </button>
+                <div className=" w-full rounded-lg bg-blue-600 text-white shadow-md lg:w-[350px]">
+                  <Button
+                    variant="ghost"
+                    className="w-full lg:w-[350px]"
+                    disabled={isEventEnded}
+                  >
+                    <TransactionForm
+                      availableSeat={event.limit}
+                      point={user?.user.Point?.totalPoints!}
+                      discount={event.Discount?.discountValue}
+                      price={event.price}
+                    />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

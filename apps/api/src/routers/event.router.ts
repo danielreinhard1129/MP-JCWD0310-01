@@ -23,6 +23,7 @@ export class EventRouter {
             this.eventController.createEventController,
           );
           this.router.get('/', this.eventController.getEventsController);
+          this.router.get('/organizer', this.eventController.getEventsByOrganizerController);
           this.router.get('/:id', this.eventController.getEventController);
     };
     getRouter(): Router {

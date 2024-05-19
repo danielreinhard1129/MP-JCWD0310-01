@@ -1,15 +1,8 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
 import {
   Sheet,
   SheetClose,
@@ -20,13 +13,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import useGetEvents from "@/hooks/api/admin/useGetEvents";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { logoutAction } from "@/redux/slices/userSlice";
+import { appConfig } from "@/utils/config";
+import { debounce } from "lodash";
 import {
   CompassIcon,
   HomeIcon,
   LogOut,
-  Menu,
   TicketMinusIcon,
-  UserRound,
+  UserRound
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,13 +31,15 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Badge } from "@/components/ui/badge";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { logoutAction } from "@/redux/slices/userSlice";
-import useGetEvents from "@/hooks/api/admin/useGetEvents";
-import { debounce } from "lodash";
 import AsyncSelect from "react-select/async";
-import { appConfig } from "@/utils/config";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
   
 interface EventOption {
   value: number;
@@ -97,8 +96,8 @@ const Header: React.FC = () => {
   type SheetSide = (typeof SHEET_SIDES)[number];
 
   return (
-    <div className="header">
-      <div className="container mx-auto bg-marine-400">
+    
+      <div className="container mx-auto bg-marine-400 min-w-full">
         <div className="flex items-center justify-between py-3 lg:px-4">
           <div className="item-center flex justify-between gap-10">
             <Link href="/">
@@ -137,7 +136,7 @@ const Header: React.FC = () => {
 
                 <Badge className="mx-1 bg-transparent">
                   <CompassIcon className="mr-2 h-4 w-4" />
-                  <Link href="/">Event Discover</Link>
+                  <Link href="/">Discover</Link>
                 </Badge>
 
                 {Boolean(id) ? (
@@ -371,7 +370,7 @@ const Header: React.FC = () => {
                         className="justify-normal"
                       >
                         <CompassIcon className="mr-2 h-4 w-4" />
-                        Event Discover
+                        Discover
 
                       
                       </Button>
@@ -394,7 +393,6 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

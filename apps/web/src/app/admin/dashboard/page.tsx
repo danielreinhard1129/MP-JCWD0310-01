@@ -12,7 +12,7 @@ import {
 import { Line } from "react-chartjs-2";
 // import faker from 'faker';
 
-// import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 
 import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
 import { Separator } from "@/components/ui/separator";

@@ -1,7 +1,7 @@
 import { hashPassword } from '@/lib/bcrypt';
 import { generateReferral } from '@/lib/referralGenerator';
 import prisma from '@/prisma';
-import { User, Voucher } from '@prisma/client';
+import { Reward, User } from '@prisma/client';
 
 interface IRegisterArgs extends Pick<User, 'email' | 'fullName' | 'password'> {
   referral: string;
@@ -36,23 +36,23 @@ export const registerService = async (body: IRegisterArgs) => {
 
     let newUser = null;
 
-    let newReferralDiscount: Voucher;
+    let newReferralDiscount: Reward;
 
     prisma.$transaction(async (tx) => {
       newUser = await prisma.user.create({
         data: { email, fullName, password: hashedPass },
       });
-      const referralDiscount = await prisma.voucher.findFirst({
+      const referralDiscount = await prisma.reward.findFirst({
         where: { title: 'Referral Discount' },
       });
 
       if (!referralDiscount) {
-        newReferralDiscount = await prisma.voucher.create({
+        newReferralDiscount = await prisma.reward.create({
           data: {
-            discountValue: 10,
+            discountValue: 10000,
             title: 'Referral Discount',
             expiredDate: expiredYear,
-            voucherType: 'REWARDS',
+
           },
         });
       }
@@ -100,18 +100,18 @@ export const registerService = async (body: IRegisterArgs) => {
       }
       if (existingReferral) {
         if (referralDiscount) {
-          await prisma.userVoucher.create({
-            data: { userId: newUser.id, voucherId: referralDiscount.id },
+          await prisma.userReward.create({
+            data: { userId: newUser.id, rewardId: referralDiscount.id },
           });
-          await prisma.voucher.update({
+          await prisma.reward.update({
             where: { id: referralDiscount.id },
             data: { expiredDate: expiredYear },
           });
         } else {
-          await prisma.userVoucher.create({
-            data: { userId: newUser.id, voucherId: newReferralDiscount.id },
+          await prisma.userReward.create({
+            data: { userId: newUser.id, rewardId: newReferralDiscount.id },
           });
-          await prisma.voucher.update({
+          await prisma.reward.update({
             where: { id: newReferralDiscount.id },
             data: { expiredDate: expiredYear },
           });
