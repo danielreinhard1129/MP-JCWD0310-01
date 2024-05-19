@@ -1,6 +1,7 @@
 import { IReview } from "./review.type";
 import { ITransaction } from "./transaction.type";
-import { IPoint, IUserVoucher } from "./voucher.type";
+import { Point, UserDiscount, UserReward } from "./voucher.type";
+
 
 export interface IUser {
   id: number;
@@ -14,10 +15,11 @@ export interface IUser {
   isVerified: boolean;
   UserDetail?: IUserDetail;
   Event: Event[];
-  UserVoucher: IUserVoucher[];
-  Point?: IPoint;
+  UserDiscount: UserDiscount[];
+  Point? : Point
   Review: IReview[];
   Transaction: ITransaction[];
+  UserReward: UserReward[]
 }
 
 export interface IUserDetail {

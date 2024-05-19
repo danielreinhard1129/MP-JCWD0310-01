@@ -1,23 +1,23 @@
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-  } from "@/components/ui/breadcrumb";
-  import { FC } from "react";
-  
-  interface BreadcrumbProps {
-    paths: { label: string; href: string }[];
-    id?: string;
-  }
-  
-  const CustomBreadcrumb: FC<BreadcrumbProps> = ({ paths, id }) => {
-    const pathArray = window.location.pathname.split("").filter(Boolean);
-    return (
-      <div className="hidden md:block mt-3 ml-5">
-          <div className="p-3 font-medium cursor-pointer text-marine-400">
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { FC } from "react";
+
+interface BreadcrumbProps {
+  paths: { label: string; href: string }[];
+  id?: string;
+}
+
+const CustomBreadcrumb: FC<BreadcrumbProps> = ({ paths, id }) => {
+  const pathArray = window.location.pathname.split("").filter(Boolean);
+  return (
+    <div className="mx-auto mt-0 hidden bg-transparent md:block">
+      <div className="cursor-pointer p-5 font-medium text-marine-400">
         <Breadcrumb>
           <BreadcrumbList>
             {paths.map((path, index) => (
@@ -32,13 +32,11 @@ import {
                 {index < pathArray.length - 1}
               </BreadcrumbItem>
             ))}
-           
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      </div>
-    );
-  };
-  
-  export default CustomBreadcrumb;
-  
+    </div>
+  );
+};
+
+export default CustomBreadcrumb;

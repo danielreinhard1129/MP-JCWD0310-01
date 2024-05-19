@@ -1,7 +1,7 @@
 import { hashPassword } from '@/lib/bcrypt';
 import { generateReferral } from '@/lib/referralGenerator';
 import prisma from '@/prisma';
-import { User, Voucher } from '@prisma/client';
+import { User } from '@prisma/client';
 
 interface IRegisterArgs extends Pick<User, 'email' | 'fullName' | 'password'> {
   referral: string;
@@ -36,26 +36,26 @@ export const registerService = async (body: IRegisterArgs) => {
 
     let newUser = null;
 
-    let newReferralDiscount: Voucher;
+    // let newReferralDiscount: Voucher;
 
     prisma.$transaction(async (tx) => {
       newUser = await prisma.user.create({
         data: { email, fullName, password: hashedPass },
       });
-      const referralDiscount = await prisma.voucher.findFirst({
-        where: { title: 'Referral Discount' },
-      });
+      // const referralDiscount = await prisma.voucher.findFirst({
+      //   where: { title: 'Referral Discount' },
+      // });
 
-      if (!referralDiscount) {
-        newReferralDiscount = await prisma.voucher.create({
-          data: {
-            discountValue: 10,
-            title: 'Referral Discount',
-            expiredDate: expiredYear,
-            voucherType: 'REWARDS',
-          },
-        });
-      }
+      // if (!referralDiscount) {
+      //   newReferralDiscount = await prisma.voucher.create({
+      //     data: {
+      //       discountValue: 10,
+      //       title: 'Referral Discount',
+      //       expiredDate: expiredYear,
+      //       voucherType: 'REWARDS',
+      //     },
+      //   });
+      // }
 
       if (newUser) {
         await prisma.userDetail.create({
@@ -98,25 +98,25 @@ export const registerService = async (body: IRegisterArgs) => {
           });
         }
       }
-      if (existingReferral) {
-        if (referralDiscount) {
-          await prisma.userVoucher.create({
-            data: { userId: newUser.id, voucherId: referralDiscount.id },
-          });
-          await prisma.voucher.update({
-            where: { id: referralDiscount.id },
-            data: { expiredDate: expiredYear },
-          });
-        } else {
-          await prisma.userVoucher.create({
-            data: { userId: newUser.id, voucherId: newReferralDiscount.id },
-          });
-          await prisma.voucher.update({
-            where: { id: newReferralDiscount.id },
-            data: { expiredDate: expiredYear },
-          });
-        }
-      }
+      // if (existingReferral) {
+      //   if (referralDiscount) {
+      //     await prisma.userVoucher.create({
+      //       data: { userId: newUser.id, voucherId: referralDiscount.id },
+      //     });
+      //     await prisma.voucher.update({
+      //       where: { id: referralDiscount.id },
+      //       data: { expiredDate: expiredYear },
+      //     });
+      //   } else {
+      //     await prisma.userVoucher.create({
+      //       data: { userId: newUser.id, voucherId: newReferralDiscount.id },
+      //     });
+      //     await prisma.voucher.update({
+      //       where: { id: newReferralDiscount.id },
+      //       data: { expiredDate: expiredYear },
+      //     });
+      //   }
+      // }
     });
 
     return { message: 'Register succesful!', data: newUser };
