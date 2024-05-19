@@ -13,6 +13,11 @@ export class TransactionRouter {
   }
 
   private initializeRoutes(): void {
+    this.router.post(
+      '/',
+      //   uploader('IMG', '/txProof').array('paymentProof', 1),
+      this.transactionController.createTransactionController,
+    );
     this.router.get(
       '/organizer',
       this.transactionController.getTransactionsByOrganizerController,
@@ -21,11 +26,7 @@ export class TransactionRouter {
       '/user',
       this.transactionController.getTransactionsController,
     );
-    this.router.post(
-      '/',
-      //   uploader('IMG', '/txProof').array('paymentProof', 1),
-      this.transactionController.createTransactionController,
-    );
+
     this.router.post(
       '/accepting',
       this.transactionController.acceptTransactionController,

@@ -17,14 +17,14 @@ export const getTransactionsByOrganizerService = async (
 
     const whereClause: Prisma.TransactionWhereInput = {
       status: status,
-      event: { organizer: { id: Number(id) } },
+      event: { organizer: { id: id } },
     };
 
     const transactions = await prisma.transaction.findMany({
       where: whereClause,
       //   where: whereClause,
       // include: { user: true },
-      skip: (page - 1) * take,
+      skip: (page - 1) * take || 0,
       take: take,
       orderBy: {
         [sortBy]: sortOrder,
