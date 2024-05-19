@@ -96,7 +96,7 @@ model Event {
   updatedAt   DateTime     @updatedAt
   // TicketType  TicketType[]
   Review      Review?
-  Transaction Transaction?
+  Transaction Transaction[]
   Discount    Discount[]
 
   @@map("events")

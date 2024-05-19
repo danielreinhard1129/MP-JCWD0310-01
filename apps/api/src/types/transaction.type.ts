@@ -4,8 +4,8 @@ export interface ITransactionArgs {
     ticketTypeId:number
     qty: number
     isPointUsed:boolean 
-    eventVoucherId:number
-    userVoucherId: number
+    userDiscountId:number
+    userRewardId: number
 
 
 }

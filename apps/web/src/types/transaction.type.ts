@@ -1,6 +1,6 @@
-import { IEvent, ITicketType } from "./event.type";
+import { IEvent} from "./event.type";
 import { IUser } from "./user.type";
-import { IEventVoucher, IPoint, IUserVoucher } from "./voucher.type";
+// import { IEventVoucher, IPoint, IUserVoucher } from "./voucher.type";
 
 export interface TRX {
   id: number;
@@ -45,8 +45,8 @@ export interface ITransactionDetail {
   userVoucherId?: number | null;
   pointId?: number | null;
   transaction: ITransaction;
-  ticketType: ITicketType;
-  eventVoucher?: IEventVoucher | null;
-  userVoucher?: IUserVoucher | null;
-  point?: IPoint | null;
+  // ticketType: ITicketType;
+  // eventVoucher?: IEventVoucher | null;
+  // userVoucher?: IUserVoucher | null;
+  // point?: IPoint | null;
 }
