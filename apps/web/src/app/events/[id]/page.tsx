@@ -4,21 +4,13 @@ import CustomBreadcrumb from "@/components/Breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import CustomBreadcrumb from "@/components/Breadcrumb";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useGetEvent from "@/hooks/api/admin/useGetEvent";
-import useGetUser from "@/hooks/api/users/useGetUser";
 import useGetUser from "@/hooks/api/users/useGetUser";
 import { appConfig } from "@/utils/config";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound, useRouter } from "next/navigation";
-import { useState } from "react";
-import { FiMapPin } from "react-icons/fi";
-import { IoMdTime } from "react-icons/io";
 import { useState } from "react";
 import { FiMapPin } from "react-icons/fi";
 import { IoMdTime } from "react-icons/io";
@@ -29,11 +21,9 @@ import { useAppSelector } from "@/redux/hooks";
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
-  const {id} = useAppSelector((state)=>state.user)
+  const { id } = useAppSelector((state) => state.user);
   const { event, isLoading } = useGetEvent(Number(params.id));
   const { user } = useGetUser(Number(id));
-
-
 
   console.log(id);
   console.log(user?.user.Point?.totalPoints);
@@ -42,7 +32,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
 
   const totalRewardValue =
     user?.user.UserReward?.reduce(
-      (total, reward) => total + reward.reward.value,
+      (total, reward) => total + reward.reward.discountValue,
       0,
     ) ?? 0;
   // console.log(totalRewardValue);
@@ -74,12 +64,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
   const endDate = new Date(event.endDate);
   const isEventEnded = today > endDate;
 
-  const today = new Date();
-  const endDate = new Date(event.endDate);
-  const isEventEnded = today > endDate;
-
   return (
-    <main className="container mx-auto bg-marine-50 px-4">
     <main className="container mx-auto bg-marine-50 px-4">
       <CustomBreadcrumb paths={eventDetailBreadcrumb} />
       <section className="mb-4 mt-2 lg:mx-12">
@@ -91,26 +76,16 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 src={`${appConfig.baseURL}/assets${event.thumbnail}`}
                 alt="thumbnail image"
                 className="rounded-xl bg-slate-200 object-cover md:p-1.5"
-                className="rounded-xl bg-slate-200 object-cover md:p-1.5"
               />
             </div>
           </div>
 
-          <div className="relative bg-slate-50 lg:col-span-2">
           <div className="relative bg-slate-50 lg:col-span-2">
             <div className="flex w-full flex-col gap-8 rounded-lg border p-3 shadow-md md:p-4">
               <div className="flex flex-col gap-6">
                 <h2 className="text-lg font-bold">{event.title}</h2>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <div className="flex gap-3">
-                    <Badge
-                      className={`p-bold-20 rounded-xl px-5 text-lg ${isEventEnded ? "text-red-600" : "bg-marine-300 text-marine-700"}`}
-                    >
-                      {isEventEnded
-                        ? "Event Ended"
-                        : event.price === 0
-                          ? "Free"
-                          : `IDR.${event.price}`}
                     <Badge
                       className={`p-bold-20 rounded-xl px-5 text-lg ${isEventEnded ? "text-red-600" : "bg-marine-300 text-marine-700"}`}
                     >
@@ -179,7 +154,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
       {/* DESCRIPTION AND */}
       <section className="mb-4 mt-5 lg:mx-12 lg:h-[700px]">
         <div className=" mb-4 flex flex-col space-y-1.5 lg:grid lg:grid-cols-6 lg:gap-8">
-          <div className="h-[400px] lg:col-span-4 md:relative">
+          <div className="h-[400px] md:relative lg:col-span-4">
             <div className=" flex flex-col gap-3">
               <p className="p-bold-20 text-grey-600 text-md pl-6">
                 Description:

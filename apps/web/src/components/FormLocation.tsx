@@ -84,7 +84,7 @@ const FormLocation : React.FC<FormLocationProps> = ({
           <DialogHeader>
             <DialogTitle className="mr-2 h-12 w-4 text-gray-500">{label}</DialogTitle>
             <DialogDescription>
-              Make sure your location & Address Clear. Click save when you're done.
+              Make sure your location & Address Clear. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
