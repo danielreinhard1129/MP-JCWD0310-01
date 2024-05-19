@@ -1,6 +1,4 @@
-import { ITicketType } from "./event.type";
 import { IUser } from "./user.type";
-import { IEventVoucher, IPoint, IUserVoucher } from "./voucher.type";
 
 export interface ITransaction {
   id: number;
@@ -25,8 +23,8 @@ export interface ITransactionDetail {
   userVoucherId?: number | null;
   pointId?: number | null;
   transaction: ITransaction;
-  ticketType: ITicketType;
-  eventVoucher?: IEventVoucher | null;
-  userVoucher?: IUserVoucher | null;
-  point?: IPoint | null;
+  // ticketType: ITicketType;
+  // eventVoucher?: IEventVoucher | null;
+  // userVoucher?: IUserVoucher | null;
+  // point?: IPoint | null;
 }

@@ -6,13 +6,17 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import useGetEvents from "@/hooks/api/admin/useGetEvents";
+import { useAppSelector } from "@/redux/hooks";
 import { appConfig } from "@/utils/config";
 import Image from "next/image";
 import { useState } from "react";
 
 const home = () => {
+  const { id } = useAppSelector((state) => state.user);
   const [page, setPage] = useState<number>(1);
   const { data: allEvents } = useGetEvents({ page: 1, take: 9 });
   const { data: paginatedEvents, meta } = useGetEvents({
@@ -23,6 +27,7 @@ const home = () => {
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
   };
+  console.log(id);
 
   // Filter for free events
   const freeEvents = allEvents?.filter((event) => event.price === 0) || [];
@@ -30,14 +35,14 @@ const home = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-marine-100 px-4">
       <h1 className="mb-4 mt-4 text-2xl font-bold md:mb-8 md:text-3xl"></h1>
-      <section>
+      <section className="mx-4 md:mx-10">
         <div className="mb-6 grid h-56 w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-10 lg:grid-cols-1">
           <Carousel>
-            <CarouselContent className="w-full">
+            <CarouselContent className="mx-4 w-full">
               <CarouselItem className="md:basis pl-4  md:mx-auto">
                 <div className="rounded-lg bg-white p-4 shadow-lg md:p-6 ">
                   <Image
-                    className="rounded-lg object-cover object-center shadow-md"
+                    className="mx-auto rounded-lg object-cover object-center shadow-md "
                     fill
                     src="/img/concert.jpg"
                     alt="event pic"
@@ -50,18 +55,18 @@ const home = () => {
                     className="mx-auto"
                     width={220}
                     height={200}
-                    src="/"
+                    src="/img/exibition.jpg"
                     alt="event pic"
                   />
                 </div>
               </CarouselItem>
               <CarouselItem className="md:basis-1/2 lg:basis-2/3">
-                <div className="rounded-lg bg-white p-4 shadow-lg md:p-6">
+                <div className="rounded-lg bg-transparent p-4 shadow-lg md:p-6">
                   <Image
-                    className="mx-auto"
+                    className="mx-auto rounded-lg object-cover object-center shadow-md"
                     width={220}
                     height={200}
-                    src="/"
+                    src="/img/festival.jpg"
                     alt="event pic"
                   />
                 </div>
@@ -89,11 +94,13 @@ const home = () => {
                 </div>
               </CarouselItem>
             </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
           </Carousel>
         </div>
       </section>
 
-      <section>
+      <section className="mx-4 md:mx-8">
         <h1 className="mb-4 mt-5 text-left text-lg font-semibold md:mb-8 md:text-xl">
           Favorite Events
         </h1>
@@ -119,7 +126,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className="mx-4 md:mx-6">
+      <section className="mx-4 md:mx-8">
         <h1 className="mb-4 mt-5 text-left text-lg font-semibold md:mb-8 md:text-xl">
           Upcoming Events
         </h1>
