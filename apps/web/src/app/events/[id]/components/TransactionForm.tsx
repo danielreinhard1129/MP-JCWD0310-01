@@ -20,6 +20,7 @@ interface TransactionFormProps {
   discount: number;
   point: number;
   price: number;
+  rewardValue: number;
 }
 
 const TransactionForm: FC<TransactionFormProps> = ({
@@ -27,30 +28,30 @@ const TransactionForm: FC<TransactionFormProps> = ({
   discount,
   point,
   price,
+  rewardValue
 }) => {
   const router = useRouter();
   const [ticketCount, setTicketCount] = useState(1);
-  const [voucher, setVoucher] = useState(0);
-  const [reward, setReward] = useState(0);
   const [totalPayment, setTotalPayment] = useState(0);
   const [isPointUsed, setIsPointUsed] = useState(false);
 
   useEffect(() => {
+    
     const ticketPrice = price; // Harga per tiket
     const totalPrice = ticketCount * ticketPrice;
-
-    let totalDiscount = voucher + reward;
+    
+    let totalDiscount = 0;
     let updatedPoint = point;
     if (isPointUsed) {
       totalDiscount += point;
       updatedPoint = 0;
     }
-
     const total = Math.max(0, totalPrice - totalDiscount); // Pastikan total tidak negatif
-    const totalPayment = isPointUsed ? total - point : total;
     setTotalPayment(total);
-  }, [ticketCount, voucher, reward, point]);
-
+    
+    const totalPayment = total;
+  }, [ticketCount, point, price, isPointUsed]);
+  
   // Fungsi untuk menangani pengurangan jumlah tiket
   const resetTicketCount = () => {
     setTicketCount(0);
@@ -115,7 +116,7 @@ const TransactionForm: FC<TransactionFormProps> = ({
                 className="block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-marine-200 focus:outline-none"
               >
                 <option value="">Pilih Voucher</option>
-                <option value="voucher">{voucher}</option>
+                <option value="voucher">{discount}</option>
                 <option value="reward2">5000</option>
                 <option value="reward3">8000</option>
               </select>
@@ -129,7 +130,7 @@ const TransactionForm: FC<TransactionFormProps> = ({
                 className="block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-marine-200 focus:outline-none"
               >
                 <option value="">Pilih Reward</option>
-                <option value="reward1">10000</option>
+                <option value="reward1">reward</option>
                 <option value="reward2">50000</option>
                 <option value="reward3">8000</option>
               </select>
@@ -141,12 +142,12 @@ const TransactionForm: FC<TransactionFormProps> = ({
               </label>
               <span className="text-2xl font-semibold">
                 {isPointUsed
-                  ? `IDR.${totalPayment - point}`
+                  ? `IDR. ${totalPayment - point}`
                   : `IDR. ${totalPayment}`}
               </span>
             </div>
             <div className="mb-4 flex justify-between gap-4">
-              <span>point : {isPointUsed ? 0 : `IDR.${point}`}</span>
+              <span>point : {isPointUsed ? 0 : point}</span>
               <Switch
                 checked={isPointUsed}
                 onCheckedChange={() => setIsPointUsed(!isPointUsed)}

@@ -74,21 +74,18 @@ const ProfileDetail = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <section className="px-6 py-10 md:px-36 min-h-screen">
-      <div className="flex justify-between">
-        <h1 className="text-4xl font-bold">Account Information</h1>
+    <section className="min-h-screen px-4 py-6 md:px-36  md:py-10">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold md:text-4xl">Account Information</h1>
       </div>
       <hr className="my-6 w-full" />
 
-      {/* profile account */}
-
-      <div className="grid grid-cols-5 min-h-screen">
-        {/* ========SIDEBAR========= */}
-        <div className="min-w-full border-r-2">
-          <div className="flex h-full flex-col items-center justify-center gap-2 px-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+        <div className="border-r-2 md:col-span-1">
+          <div className="flex flex-col justify-center gap-2 px-4">
             <Button
               variant="ghost"
-              className="h-16 w-full justify-start text-marine-800 hover:bg-zinc-200"
+              className="h-12 w-full justify-start text-marine-800 hover:bg-zinc-200 md:h-16"
               onClick={() => router.push(`/profile/${id}/edit`)}
             >
               <Contact className="mr-2 h-6 w-6" />
@@ -96,128 +93,105 @@ const ProfileDetail = ({ params }: { params: { id: string } }) => {
             </Button>
             <Button
               variant="ghost"
-              className="h-16 w-full justify-start text-marine-800 hover:bg-zinc-200"
+              className="h-12 w-full justify-start text-marine-800 hover:bg-zinc-200 md:h-16"
               onClick={() => router.push(`/profile/${id}/transaction-history`)}
             >
               <Calendar className="mr-2 h-6 w-6" />
               Transaction history
             </Button>
-            <Button
-              variant="ghost"
-              className="h-16 w-full justify-start text-marine-800 hover:bg-zinc-200"
-              onClick={() => router.push(`/profile/${id}/vouchers`)}
-            >
-              <Ticket className="mr-2 h-6 w-6" />
-              Points & Vouchers
-            </Button>
           </div>
         </div>
 
-        {/* =============MAIN========== */}
-        <div className="col-span-4 ml-16 ">
+        <div className="md:col-span-4">
           <div className="flex flex-col justify-center gap-4 p-2">
-            <div className=" text-lg font-semibold">Edit Profile</div>
-            <div className="flex md:flex-row md:gap-8">
-              <div className="flex flex-col gap-[48px] md:w-auto md:mt-7">
+            <div className="text-lg font-semibold">Edit Profile</div>
+
+            <div className="md:flex md:flex-row md:gap-8">
+              <div className=" hidden gap-[48px] md:mt-7 md:flex md:w-auto md:flex-col">
                 <div>First Name: </div>
                 <div>Last Name: </div>
                 <div>Phone Number: </div>
                 <div>Referral: </div>
                 <div>Gender: </div>
               </div>
-              <div>
-                <form onSubmit={handleSubmit} className="min-w-[400px]">
-                  <div className="flex w-full flex-col gap-1 md:w-auto ">
-                    <FormInput
-                      name="firstName"
-                      type="text"
-                      placeholder={
-                        values.firstName === "" ? "" : "Type your Username here"
-                      }
-                      value={values.firstName}
-                      error={errors.firstName}
-                      isError={!!touched.firstName && !!errors.firstName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    <FormInput
-                      name="lastName"
-                      type="text"
-                      placeholder={
-                        values.lastName === "" ? "" : "Type your Username here"
-                      }
-                      value={values.lastName}
-                      error={errors.lastName}
-                      isError={!!touched.lastName && !!errors.lastName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    <FormInput
-                      name="phoneNumber"
-                      type="text"
-                      placeholder="Type your phone number here"
-                      value={values.phoneNumber}
-                      error={errors.phoneNumber}
-                      isError={!!touched.phoneNumber && !!errors.phoneNumber}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    <FormInput
-                      name="referral"
-                      type="text"
-                      placeholder={
-                        values.referral === "" ? "" : "Type your Username here"
-                      }
-                      value={values.referral}
-                      error={errors.referral}
-                      isError={!!touched.referral && !!errors.referral}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      disabled={true}
-                    />
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div className="grid grid-cols-2 gap-4 md:flex md:w-auto md:flex-col md:gap-1">
+                  <FormInput
+                    name="firstName"
+                    type="text"
+                    placeholder="First Name"
+                    value={values.firstName}
+                    error={errors.firstName}
+                    isError={!!touched.firstName && !!errors.firstName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  <FormInput
+                    name="lastName"
+                    type="text"
+                    placeholder="Last Name"
+                    value={values.lastName}
+                    error={errors.lastName}
+                    isError={!!touched.lastName && !!errors.lastName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  <FormInput
+                    name="phoneNumber"
+                    type="text"
+                    placeholder="Phone Number"
+                    value={values.phoneNumber}
+                    error={errors.phoneNumber}
+                    isError={!!touched.phoneNumber && !!errors.phoneNumber}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  <FormInput
+                    name="referral"
+                    type="text"
+                    placeholder="Referral"
+                    value={values.referral}
+                    error={errors.referral}
+                    isError={!!touched.referral && !!errors.referral}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={true}
+                  />
+                  <div className="flex items-center">
                     <select
                       name="gender"
                       value={values.gender}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       className="mt-4 h-8 border"
-                      style={{ display: "block" }}
                     >
-                      <option value="MALE" label="Male">
-                        {" "}
-                        Male
-                      </option>
-                      <option value="FEMALE" label="Female">
-                        Female
-                      </option>
+                      <option value="MALE">Male</option>
+                      <option value="FEMALE">Female</option>
                     </select>
                   </div>
-
-                  <div className="mt-4 flex justify-end">
-                    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-                      <AlertDialogTrigger asChild>
-                        <Button className="bg-blue-700">Save</Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                          <AlertDialogDescription></AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <Button
-                            className="bg-blue-700"
-                            onClick={handleDialogSubmit}
-                          >
-                            Continue
-                          </Button>
-                          {/* <AlertDialogAction>Continue</AlertDialogAction> */}
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </form>
-              </div>
+                </div>
+                <div className="mt-4 flex justify-end">
+                  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                    <AlertDialogTrigger asChild>
+                      <Button className="bg-blue-700">Save</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <Button
+                          className="bg-blue-700"
+                          onClick={handleDialogSubmit}
+                        >
+                          Continue
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </form>
             </div>
           </div>
         </div>

@@ -4,7 +4,11 @@ export const getUserService = async (userId: number) => {
   try {
     const user = await prisma.userDetail.findFirst({
       where: { userId },
-      include: { user: { include: { Point: true } } },
+      include: {
+        user: {
+          include: { Point: true, UserReward: { include: { reward: true } } },
+        },
+      },
     });
     return { message: 'Get user by userId success', data: user };
   } catch (error) {

@@ -17,6 +17,7 @@ import { IFormEvent } from "@/types/event.type";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { createEventValidationSchema } from "./schemas/createEventValidationSchema";
+import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
 
 const CreateEventPage = () => {
   const { createEvent } = useCreateEvent();
