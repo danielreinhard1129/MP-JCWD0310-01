@@ -50,7 +50,7 @@ export const createEventService = async (
       createdDiscount = await prisma.discount.create({
         data: {
           name: discountName,
-          discountValue: Number(discountValue),
+          value: Number(discountValue),
           limit: Number(discountLimit),
           expires: new Date(discountExpires),
           eventId: createdEvent.id,

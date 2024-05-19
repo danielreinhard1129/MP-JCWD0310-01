@@ -16,13 +16,28 @@ import { FiMapPin } from "react-icons/fi";
 import { IoMdTime } from "react-icons/io";
 import { IoCalendarOutline } from "react-icons/io5";
 import TransactionForm from "./components/TransactionForm";
+import { useAppSelector } from "@/redux/hooks";
 
 const EventDetail = ({ params }: { params: { id: string } }) => {
-  const { event, isLoading } = useGetEvent(Number(params.id));
-  const { user } = useGetUser(Number(params.id));
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
-  console.log(user?.user.email);
+  const {id} = useAppSelector((state)=>state.user)
+  const { event, isLoading } = useGetEvent(Number(params.id));
+  const { user } = useGetUser(Number(id));
+
+
+
+  console.log(id);
+  console.log(user?.user.Point?.totalPoints);
+  console.log(event?.Discount[0]?.limit);
+  console.log(user?.user.UserReward);
+
+  const totalRewardValue =
+    user?.user.UserReward?.reduce(
+      (total, reward) => total + reward.reward.value,
+      0,
+    ) ?? 0;
+  // console.log(totalRewardValue);
 
   if (isLoading) {
     return (
@@ -140,12 +155,12 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
       {/* DESCRIPTION AND */}
       <section className="mb-4 mt-5 lg:mx-12 lg:h-[700px]">
         <div className=" mb-4 flex flex-col space-y-1.5 lg:grid lg:grid-cols-6 lg:gap-8">
-          <div className="h-[400px] lg:col-span-4">
+          <div className="h-[400px] lg:col-span-4 md:relative">
             <div className=" flex flex-col gap-3">
               <p className="p-bold-20 text-grey-600 text-md pl-6">
                 Description:
               </p>
-              <div className="rounded-md border bg-marine-50 shadow-md">
+              <div className="rounded-md border bg-marine-50  shadow-md">
                 <p
                   className="lg:p-regular-18 block p-6 lg:hidden"
                   onClick={toggleDescription}
@@ -164,19 +179,20 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
           {/* BUy Button */}
           <div className=" lg:col-span-2">
             <div className="rounded-lg border p-4 shadow-md">
-              <div className="flex justify-center  ">
+              <div className="flex justify-center lg:sticky lg:top-5">
                 <div className=" w-full rounded-lg bg-blue-600 text-white shadow-md lg:w-[350px]">
                   <Button
                     variant="ghost"
                     className="w-full lg:w-[350px]"
                     disabled={isEventEnded}
                   >
-                    <TransactionForm
+                    {/* <TransactionForm
                       availableSeat={event.limit}
-                      point={user?.user.Point?.totalPoints!}
-                      discount={event.Discount?.discountValue}
+                      point={user?.user.Point?.totalPoints ?? 0}
+                      discount={event.Discount?.value}
+                      rewardValue={totalRewardValue}
                       price={event.price}
-                    />
+                    /> */}
                   </Button>
                 </div>
               </div>

@@ -5,7 +5,7 @@ import { IUser } from "./user.type";
 export interface Reward {
   id: number;
   title: string;
-  discountValue: number;
+  value: number;
   createdAt: Date;
   expiredDate: Date;
   UserReward: UserReward[];
@@ -24,7 +24,7 @@ export interface UserReward {
 export interface Discount {
   id: number;
   name: string;
-  discountValue: number;
+  value: number;
   createdAt: Date;
   expires: Date;
   limit: number;

@@ -23,7 +23,7 @@ const useGetEvent = (id: Number) => {
   };
   useEffect(() => {
     getEvent();
-  }, []);
+  }, [id]);
   return { event: data, isLoading, refetch: getEvent };
 };
 

@@ -103,12 +103,12 @@ model Event {
 }
 
 model Reward {
-  id            Int          @id @default(autoincrement())
-  title         String
-  discountValue Int
-  createdAt     DateTime     @default(now())
-  expiredDate   DateTime
-  UserReward    UserReward[]
+  id          Int          @id @default(autoincrement())
+  title       String
+  value       Int
+  createdAt   DateTime     @default(now())
+  expiredDate DateTime
+  UserReward  UserReward[]
 
   @@map("rewards")
 }
@@ -126,16 +126,16 @@ model UserReward {
 }
 
 model Discount {
-  id            Int            @id @default(autoincrement())
-  name          String
-  discountValue Int
-  createdAt     DateTime       @default(now())
-  expires       DateTime
-  limit         Int
-  used          Int            @default(0)
-  eventId       Int
-  event         Event          @relation(fields: [eventId], references: [id])
-  UserDiscount  UserDiscount[]
+  id           Int            @id @default(autoincrement())
+  name         String
+  value        Int
+  createdAt    DateTime       @default(now())
+  expires      DateTime
+  limit        Int
+  used         Int            @default(0)
+  eventId      Int
+  event        Event          @relation(fields: [eventId], references: [id])
+  UserDiscount UserDiscount[]
   // EventVoucher  EventVoucher[]
 
   @@map("discounts")

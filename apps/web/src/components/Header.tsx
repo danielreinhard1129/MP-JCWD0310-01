@@ -136,7 +136,7 @@ const Header: React.FC = () => {
 
                 <Badge className="mx-1 bg-transparent">
                   <CompassIcon className="mr-2 h-4 w-4" />
-                  <Link href="/">Discover</Link>
+                  <Link href="/discover">Discover</Link>
                 </Badge>
 
                 {Boolean(id) ? (
