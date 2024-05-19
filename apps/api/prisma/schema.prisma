@@ -96,7 +96,7 @@ model Event {
   updatedAt   DateTime     @updatedAt
   // TicketType  TicketType[]
   Review      Review?
-  Transaction Transaction?
+  Transaction Transaction[]
   Discount    Discount[]
 
   @@map("events")
@@ -192,10 +192,10 @@ model Transaction {
   id           Int               @id @default(autoincrement())
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
-  status       StatusTransaction @default(PENDING)
+  status       StatusTransaction @default(OPENED)
   total        Int
   userId       Int
-  eventId      Int               @unique
+  eventId      Int               
   paymentProof String?
 
   user              User               @relation(fields: [userId], references: [id])
@@ -206,9 +206,10 @@ model Transaction {
 }
 
 enum StatusTransaction {
+  OPENED
   PENDING
   COMPLETE
-  ERROR
+  EXPIRED
   CANCELLED
 }
 

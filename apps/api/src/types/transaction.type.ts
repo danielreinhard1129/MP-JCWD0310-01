@@ -4,8 +4,15 @@ export interface ITransactionArgs {
     ticketTypeId:number
     qty: number
     isPointUsed:boolean 
-    eventVoucherId:number
-    userVoucherId: number
+    userDiscountId:number
+    userRewardId: number
 
 
 }
+export enum Status {
+    OPENED = 'OPENED',
+    PENDING = 'PENDING',
+    COMPLETE = 'COMPLETE',
+    EXPIRED = 'EXPIRED',
+    CANCELLED = 'CANCELLED',
+  }

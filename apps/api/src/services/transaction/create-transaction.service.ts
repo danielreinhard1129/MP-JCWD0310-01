@@ -7,19 +7,17 @@ export const createTransactionService = async (body: ITransactionArgs) => {
     const {
       eventId,
       userId,
-      eventVoucherId,
+      userDiscountId,
       isPointUsed,
       qty,
       ticketTypeId,
-      userVoucherId,
+      userRewardId,
     } = body;
     const event = await prisma.event.findFirst({ where: { id: eventId } });
     const user = await prisma.user.findFirst({ where: { id: userId } });
-    let eventVoucher = null;
-    let userVoucher = null;
-    const ticketType = await prisma.ticketType.findFirst({
-      where: { id: ticketTypeId },
-    });
+    let userDiscount = null;
+    let userReward = null;
+    
 
     if (!event) {
       throw new Error('Event not found');
@@ -28,28 +26,26 @@ export const createTransactionService = async (body: ITransactionArgs) => {
       throw new Error('User not found');
     }
 
-    if (eventVoucherId) {
-      eventVoucher = await prisma.eventVoucher.findFirst({
-        where: { eventId: eventId, voucherId: eventVoucherId },
-        include: { voucher: true },
+    if (userDiscountId) {
+      userDiscount = await prisma.userDiscount.findFirst({
+        where: { userId: userId, discountId: userDiscountId },
+        include: { discount: true },
       });
-      if (!eventVoucher) {
+      if (!userDiscount) {
         throw new Error('Voucher not found');
       }
     }
-    if (userVoucherId) {
-      userVoucher = await prisma.userVoucher.findFirst({
-        where: { userId: userId, voucherId: userVoucherId },
-        include: { voucher: true },
+    if (userRewardId) {
+      userReward = await prisma.userReward.findFirst({
+        where: { userId: userId, rewardId: userRewardId },
+        include: { reward: true },
       });
-      if (!userVoucher) {
+      if (!userReward) {
         throw new Error('Voucher not found');
       }
     }
 
-    if (!ticketType) {
-      throw new Error('Ticket invalid');
-    }
+    
     let userPoint = null;
     if (isPointUsed) {
       userPoint = await prisma.point.findFirst({ where: { userId } });
@@ -58,18 +54,17 @@ export const createTransactionService = async (body: ITransactionArgs) => {
     if (!userPoint) {
       throw new Error('Point invalid');
     }
-    const tempTotal = ticketType?.price * qty - userPoint?.totalPoints;
-    const rewardValue =
-      tempTotal * (eventVoucher?.voucher.discountValue! / 100);
-    const discountValue =
-      tempTotal * (userVoucher?.voucher.discountValue! / 100);
+    const tempTotal = event.price * qty - userPoint?.totalPoints;
+    const tempTotalAfterPotongan =
+      tempTotal - (userDiscount?.discount.discountValue! ) - (userReward?.reward.discountValue! );
+
 
     const transaction = await prisma.$transaction(async (tx) => {
       const newTransaction = await tx.transaction.create({
         data: {
           eventId,
           userId,
-          total: tempTotal - rewardValue - discountValue,
+          total: tempTotalAfterPotongan
         },
       });
 
@@ -78,17 +73,17 @@ export const createTransactionService = async (body: ITransactionArgs) => {
           qty,
           transactionId: newTransaction.id,
           ticketTypeId,
-          eventVoucherId,
-          userVoucherId,
+          userDiscountId,
+          userRewardId,
           pointId: userPoint.id,
         },
       });
-      await tx.userVoucher.update({
-        where: { id: userVoucher?.id },
+      await tx.userReward.update({
+        where: { id: userReward?.id },
         data: { isUsed: true },
       });
-      await tx.voucher.update({
-        where: { id: eventVoucher?.voucherId },
+      await tx.discount.update({
+        where: { id: userDiscount?.discountId },
         data: { limit: { decrement: 1 } },
       });
       await tx.point.update({

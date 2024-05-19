@@ -1,5 +1,6 @@
 import { createEventService } from "@/services/admin/create-event.service";
 import { getEventService } from "@/services/admin/get-event.service";
+import { getEventsByOrganizerService } from "@/services/admin/get-events-by-organizer.service";
 import { getEventsService } from "@/services/admin/get-events.service";
 import { NextFunction, Request, Response } from "express";
 
@@ -31,6 +32,23 @@ export class EventController {
         search: (req.query.search as string ) || '',
       }
       const result = await getEventsService(query);
+      
+      return res.status(200).send(result);
+    } catch (error) {
+      throw (error);
+    }
+  }
+  async getEventsByOrganizerController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const query = {
+        id:  parseInt(req.query.id as string),
+        take : parseInt(req.query.take as string) || 10,
+        page: parseInt(req.query.page as string) || 1,
+        sortBy: (req.query.sortBy as string) || 'createdAt',
+        sortOrder: (req.query.sortOrder as string) || 'desc',
+        search: (req.query.search as string ) || '',
+      }
+      const result = await getEventsByOrganizerService(query);
       
       return res.status(200).send(result);
     } catch (error) {
