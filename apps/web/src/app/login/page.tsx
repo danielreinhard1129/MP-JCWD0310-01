@@ -78,7 +78,7 @@ const Login: React.FC = () => {
           </CardContent>
           <CardFooter>
             <div className="flex justify-start gap-1 text-xs font-extralight">
-              Don't have have an account?
+              Don&apos;t have have an account?
               <Link href="/register" className="underline">
                 <p> Register</p>
               </Link>

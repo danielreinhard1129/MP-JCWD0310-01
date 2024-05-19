@@ -17,6 +17,10 @@ export class TransactionRouter {
       '/organizer',
       this.transactionController.getTransactionsByOrganizerController,
     );
+    this.router.get(
+      '/user',
+      this.transactionController.getTransactionsController,
+    );
     this.router.post(
       '/',
       //   uploader('IMG', '/txProof').array('paymentProof', 1),

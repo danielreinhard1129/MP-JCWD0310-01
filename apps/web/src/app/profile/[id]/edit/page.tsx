@@ -102,14 +102,7 @@ const ProfileDetail = ({ params }: { params: { id: string } }) => {
               <Calendar className="mr-2 h-6 w-6" />
               Transaction history
             </Button>
-            <Button
-              variant="ghost"
-              className="h-16 w-full justify-start text-marine-800 hover:bg-zinc-200"
-              onClick={() => router.push(`/profile/${id}/vouchers`)}
-            >
-              <Ticket className="mr-2 h-6 w-6" />
-              Points & Vouchers
-            </Button>
+            
           </div>
         </div>
 
