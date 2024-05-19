@@ -1,46 +1,33 @@
 "use client";
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 // import faker from 'faker';
 
 // import { faker } from "@faker-js/faker";
 
-import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
-import { Separator } from "@/components/ui/separator";
-import {
-  BarChart3,
-  Calendar,
-  Contact,
-  Home as HomeIcon,
-  TicketCheck,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { Separator } from "@/components/ui/separator";
+import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
 import useGetTransactionsByOrganizer from "@/hooks/api/transactions/useGetTransactionsByOrganizer";
 import { useAppSelector } from "@/redux/hooks";
 import { IStatusTransaction, TRX } from "@/types/transaction.type";
-// import {
-//   LineChart,
-//   Line,
-//   CartesianGrid,
-//   XAxis,
-//   YAxis,
-//   ResponsiveContainer,
-// } from "recharts";
+import { Calendar, Home as HomeIcon, TicketCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Chart2022 from "./components/Chart2022";
 
 interface SortedArray {
   date: string;
   total: number;
-  count: number
+  count: number;
 }
 
 interface DataProps {
@@ -56,6 +43,7 @@ const Dashboard = () => {
   const { id } = useAppSelector((state) => state.user);
   const { data: transactions } = useGetTransactionsByOrganizer({
     id,
+    take: 100,
     sortBy: "createdAt",
     sortOrder: "asc",
     status: IStatusTransaction.COMPLETE,
@@ -109,7 +97,7 @@ const Dashboard = () => {
     const dailyTotals = transactions.reduce((acc: any, transaction) => {
       const date = new Date(transaction.createdAt).toISOString().split("T")[0];
       if (!acc[date]) {
-        acc[date] = { date: date, total: 0 , count: 0};
+        acc[date] = { date: date, total: 0, count: 0 };
       }
       acc[date].total += transaction.total;
       acc[date].count += 1;
@@ -206,31 +194,7 @@ const Dashboard = () => {
                 <h1 className="text-4xl font-bold">Organizer Dashboard</h1>
               </div>
               <div className="mt-2 p-2">
-                <Line
-                  options={options}
-                  data={data}
-                  className="rounded-2xl bg-white p-2 shadow-md"
-                />
-                {/* <ResponsiveContainer>
-                  <LineChart
-                    width={600}
-                    height={300}
-                    data={sortedArray}
-                    margin={{ top: 5, right: 20, bottom: 5, left: 10 }}
-                  >
-                    <Line
-                      type="monotone"
-                      dataKey="total"
-                      stroke="#8884d8"
-                      activeDot={{ r: 8 }}
-                    />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <XAxis dataKey="date" />
-                    <YAxis dataKey="" />
-                    <Tooltip/>
-                    <Legend/>
-                  </LineChart>
-                </ResponsiveContainer> */}
+                <Chart2022 />
               </div>
               <Separator className="my-8 h-0.5 bg-white" />
             </div>
