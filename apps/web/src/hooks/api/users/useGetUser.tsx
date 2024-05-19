@@ -30,7 +30,7 @@ const useGetUser = (id: number) => {
   useEffect(() => {
 
     getUser();
-  }, []);
+  }, [id]);
   return { user: data, isLoading, refetch: getUser };
 };
 export default useGetUser;

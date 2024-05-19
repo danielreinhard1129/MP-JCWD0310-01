@@ -1,6 +1,6 @@
 export const appConfig = {
   baseURL: "http://localhost:8000/api",
-  baseUrlNext : 'http://localhost:3000',
+  baseUrlNext : 'http://localhost:3000/events',
 };
 
 export const yupErrorMessage = {

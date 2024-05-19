@@ -23,7 +23,7 @@ export interface IEvent {
   updatedAt: Date;
   Review   : IReview
   Transaction: ITransaction
-  Discount : Discount
+  Discount : Discount[]
 }
 
 export interface IFormEvent {
