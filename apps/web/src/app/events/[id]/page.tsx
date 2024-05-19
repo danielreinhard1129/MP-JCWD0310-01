@@ -4,24 +4,16 @@ import CustomBreadcrumb from "@/components/Breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import CustomBreadcrumb from "@/components/Breadcrumb";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useGetEvent from "@/hooks/api/admin/useGetEvent";
-import useGetUser from "@/hooks/api/users/useGetUser";
 import useGetUser from "@/hooks/api/users/useGetUser";
 import { appConfig } from "@/utils/config";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound, useRouter } from "next/navigation";
-import { useState } from "react";
 import { FiMapPin } from "react-icons/fi";
 import { IoMdTime } from "react-icons/io";
 import { useState } from "react";
-import { FiMapPin } from "react-icons/fi";
-import { IoMdTime } from "react-icons/io";
 import { IoCalendarOutline } from "react-icons/io5";
 import TransactionForm from "./components/TransactionForm";
 import { useAppSelector } from "@/redux/hooks";
@@ -29,20 +21,18 @@ import { useAppSelector } from "@/redux/hooks";
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
-  const {id} = useAppSelector((state)=>state.user)
+  const { id } = useAppSelector((state) => state.user);
   const { event, isLoading } = useGetEvent(Number(params.id));
   const { user } = useGetUser(Number(id));
 
-
-
   console.log(id);
   console.log(user?.user.Point?.totalPoints);
-  console.log(event?.Discount[0]?.limit);
+  console.log(event?.Discount[0]?.discountValue);
   console.log(user?.user.UserReward);
 
   const totalRewardValue =
     user?.user.UserReward?.reduce(
-      (total, reward) => total + reward.reward.value,
+      (total, reward) => total + reward.reward.discountValue,
       0,
     ) ?? 0;
   // console.log(totalRewardValue);
@@ -74,12 +64,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
   const endDate = new Date(event.endDate);
   const isEventEnded = today > endDate;
 
-  const today = new Date();
-  const endDate = new Date(event.endDate);
-  const isEventEnded = today > endDate;
-
   return (
-    <main className="container mx-auto bg-marine-50 px-4">
     <main className="container mx-auto bg-marine-50 px-4">
       <CustomBreadcrumb paths={eventDetailBreadcrumb} />
       <section className="mb-4 mt-2 lg:mx-12">
@@ -91,26 +76,16 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 src={`${appConfig.baseURL}/assets${event.thumbnail}`}
                 alt="thumbnail image"
                 className="rounded-xl bg-slate-200 object-cover md:p-1.5"
-                className="rounded-xl bg-slate-200 object-cover md:p-1.5"
               />
             </div>
           </div>
 
-          <div className="relative bg-slate-50 lg:col-span-2">
           <div className="relative bg-slate-50 lg:col-span-2">
             <div className="flex w-full flex-col gap-8 rounded-lg border p-3 shadow-md md:p-4">
               <div className="flex flex-col gap-6">
                 <h2 className="text-lg font-bold">{event.title}</h2>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <div className="flex gap-3">
-                    <Badge
-                      className={`p-bold-20 rounded-xl px-5 text-lg ${isEventEnded ? "text-red-600" : "bg-marine-300 text-marine-700"}`}
-                    >
-                      {isEventEnded
-                        ? "Event Ended"
-                        : event.price === 0
-                          ? "Free"
-                          : `IDR.${event.price}`}
                     <Badge
                       className={`p-bold-20 rounded-xl px-5 text-lg ${isEventEnded ? "text-red-600" : "bg-marine-300 text-marine-700"}`}
                     >
@@ -179,12 +154,12 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
       {/* DESCRIPTION AND */}
       <section className="mb-4 mt-5 lg:mx-12 lg:h-[700px]">
         <div className=" mb-4 flex flex-col space-y-1.5 lg:grid lg:grid-cols-6 lg:gap-8">
-          <div className="h-[400px] lg:col-span-4 md:relative">
+          <div className="h-[400px] md:relative lg:col-span-4">
             <div className=" flex flex-col gap-3">
               <p className="p-bold-20 text-grey-600 text-md pl-6">
                 Description:
               </p>
-              <div className="rounded-md border bg-marine-50  shadow-md">
+              <div className="">
                 <p
                   className="lg:p-regular-18 block p-6 lg:hidden"
                   onClick={toggleDescription}
@@ -203,22 +178,18 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
           {/* BUy Button */}
           <div className=" lg:col-span-2">
             <div className="rounded-lg border p-4 shadow-md">
-              <div className="flex justify-center lg:sticky lg:top-5">
-                <div className=" w-full rounded-lg bg-blue-600 text-white shadow-md lg:w-[350px]">
-                  <Button
-                    variant="ghost"
-                    className="w-full lg:w-[350px]"
-                    disabled={isEventEnded}
-                  >
-                    {/* <TransactionForm
-                      availableSeat={event.limit}
-                      point={user?.user.Point?.totalPoints ?? 0}
-                      discount={event.Discount?.value}
-                      rewardValue={totalRewardValue}
-                      price={event.price}
-                    /> */}
-                  </Button>
-                </div>
+              <div className="flex justify-center  ">
+                <button className=" w-full rounded-lg py-2 text-white lg:w-[350px]">
+                  <TransactionForm
+                    discount={event.Discount[0].discountValue}
+                    rewardValue={
+                      user?.user.UserReward[0].reward.discountValue ?? 0
+                    }
+                    availableSeat={event.limit}
+                    price={event.price}
+                    point={user?.user.Point?.totalPoints ?? 0}
+                  />
+                </button>
               </div>
             </div>
           </div>

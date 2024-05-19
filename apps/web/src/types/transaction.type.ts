@@ -50,3 +50,10 @@ export interface ITransactionDetail {
   // userVoucher?: IUserVoucher | null;
   // point?: IPoint | null;
 }
+
+export interface IFormCreateTransaction {
+  totalPaymant: number;
+  ticketCount: number;
+  userId: number;
+  eventId: number;
+}
