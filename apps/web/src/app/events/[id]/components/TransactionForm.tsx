@@ -38,6 +38,7 @@ const TransactionForm: FC<TransactionFormProps> = ({
   const [isPointUsed, setIsPointUsed] = useState(false);
 
   useEffect(() => {
+    
     const ticketPrice = price; // Harga per tiket
     const totalPrice = ticketCount * ticketPrice;
 
@@ -57,7 +58,6 @@ const TransactionForm: FC<TransactionFormProps> = ({
     if (isPointUsed) {
       totalDiscount += point;
     }
-
     const total = Math.max(0, totalPrice - totalDiscount); // Pastikan total tidak negatif
     setTotalPayment(total);
   }, [ticketCount, point, price, isPointUsed, isDiscountUsed, isRewardUsed]);

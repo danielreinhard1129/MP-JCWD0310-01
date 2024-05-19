@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -11,26 +10,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import Pagination from "@/components/pagination";
 import AuthGuardOrganizer from "@/hoc/AuthGuardOrganizer";
+import useGetTransactionsByOrganizer from "@/hooks/api/transactions/useGetTransactionsByOrganizer";
+import useGetTransactionsPending from "@/hooks/api/transactions/useGetTransactionsPending";
+import { useAppSelector } from "@/redux/hooks";
+import { IStatusTransaction } from "@/types/transaction.type";
 import { Calendar, Home as HomeIcon, TicketCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useAppSelector } from "@/redux/hooks";
-import useGetTransactionsByOrganizer from "@/hooks/api/transactions/useGetTransactionsByOrganizer";
-import { IStatusTransaction } from "@/types/transaction.type";
-import Pagination from "@/components/pagination";
-import useGetTransactionsPending from "@/hooks/api/transactions/useGetTransactionsPending";
+import AdminApprove from "./components/AdminApprove";
+import useAcceptTransaction from "@/hooks/api/transactions/useAcceptTransaction";
 
 const Transactions = () => {
   const router = useRouter();
   const [page, setPage] = useState<number>(1);
   const [pagePending, setPagePending] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
+
   const { data: transactions, meta } = useGetTransactionsByOrganizer({
     id,
     page,
     take: 5,
-    
   });
 
   const { data: pendingTx, meta: pendingMeta } = useGetTransactionsPending({
@@ -40,13 +43,13 @@ const Transactions = () => {
     status: IStatusTransaction.PENDING,
   });
 
+
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
   };
   const handleChangePaginatePending = ({ selected }: { selected: number }) => {
     setPagePending(selected + 1);
   };
-
 
   return (
     <main className=" min-w-full md:m-0">
@@ -138,6 +141,13 @@ const Transactions = () => {
                                 {tx.event.title}
                               </TableCell>
                               <TableCell>{tx.user.fullName}</TableCell>
+                              <TableCell>
+                                <AdminApprove
+                                  status={tx.status}
+                                  paymentProof={tx.paymentProof || ""}
+                                  id={tx.id}
+                                />
+                              </TableCell>
                             </TableRow>
                           );
                         })}

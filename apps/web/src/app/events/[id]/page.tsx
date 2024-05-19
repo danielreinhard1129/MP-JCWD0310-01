@@ -159,7 +159,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
               <p className="p-bold-20 text-grey-600 text-md pl-6">
                 Description:
               </p>
-              <div className="">
+              <div className="rounded-md border bg-marine-50  shadow-md">
                 <p
                   className="lg:p-regular-18 block p-6 lg:hidden"
                   onClick={toggleDescription}

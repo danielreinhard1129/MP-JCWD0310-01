@@ -13,9 +13,9 @@ import useGetEvents from "@/hooks/api/admin/useGetEvents";
 import { useAppSelector } from "@/redux/hooks";
 import { appConfig } from "@/utils/config";
 import Image from "next/image";
-import { useState } from "react";
+import { FC, useState } from "react";
 
-const home = () => {
+const Home: FC = () => {
   const { id } = useAppSelector((state) => state.user);
   const [page, setPage] = useState<number>(1);
   const { data: allEvents } = useGetEvents({ page: 1, take: 9 });
@@ -91,9 +91,8 @@ const home = () => {
           <Carousel>
             <CarouselContent className="mt-4 grid w-full grid-cols-1 md:grid-cols-5">
               {freeEvents.map((event, index) => (
-                <CarouselItem>
+                <CarouselItem key={index}>
                   <EventCard
-                    key={index}
                     eventId={event.id}
                     title={event.title}
                     category={event.category}
@@ -139,4 +138,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default Home;

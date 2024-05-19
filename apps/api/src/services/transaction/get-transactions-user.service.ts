@@ -9,7 +9,7 @@ interface GetTransactionsQuery extends PaginationQueryParams {
   status: Status;
 }
 
-export const getTransactionsByOrganizerService = async (
+export const getTransactionsService = async (
   query: GetTransactionsQuery,
 ) => {
   try {
@@ -17,14 +17,14 @@ export const getTransactionsByOrganizerService = async (
 
     const whereClause: Prisma.TransactionWhereInput = {
       status: status,
-      event: { organizer: { id: id } },
+      userId:id,
     };
 
     const transactions = await prisma.transaction.findMany({
       where: whereClause,
       //   where: whereClause,
       // include: { user: true },
-      skip: (page - 1) * take || 0,
+      skip: (page - 1) * take,
       take: take,
       orderBy: {
         [sortBy]: sortOrder,
