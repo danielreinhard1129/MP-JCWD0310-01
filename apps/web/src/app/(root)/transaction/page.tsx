@@ -74,7 +74,7 @@ const TransactionInvoice = () => {
               <ul className="grid gap-3">
                 <li className="flex items-center justify-between">
                   <h2 className="text-muted-foreground">
-                    Taylor Swift "Lover" World Tour
+                    Taylor Swift Lover World Tour
                   </h2>
                   <span>30 November 2024</span>
                 </li>
