@@ -3,20 +3,19 @@
 import CustomBreadcrumb from "@/components/Breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useGetEvent from "@/hooks/api/admin/useGetEvent";
 import useGetUser from "@/hooks/api/users/useGetUser";
+import { useAppSelector } from "@/redux/hooks";
 import { appConfig } from "@/utils/config";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound, useRouter } from "next/navigation";
+import { useState } from "react";
 import { FiMapPin } from "react-icons/fi";
 import { IoMdTime } from "react-icons/io";
-import { useState } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
 import TransactionForm from "./components/TransactionForm";
-import { useAppSelector } from "@/redux/hooks";
 
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -25,10 +24,6 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
   const { event, isLoading } = useGetEvent(Number(params.id));
   const { user } = useGetUser(Number(id));
 
-  console.log(id);
-  console.log(user?.user.Point?.totalPoints);
-  console.log(event?.Discount[0]?.discountValue);
-  console.log(user?.user.UserReward);
 
   const totalRewardValue =
     user?.user.UserReward?.reduce(
@@ -181,7 +176,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
               <div className="flex justify-center  ">
                 <button className=" w-full rounded-lg py-2 text-white lg:w-[350px]">
                   <TransactionForm
-                    discount={event.Discount[0].discountValue}
+                    discount={event.Discount[0].discountValue??0}
                     rewardValue={
                       user?.user.UserReward[0].reward.discountValue ?? 0
                     }
