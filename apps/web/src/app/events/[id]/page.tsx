@@ -3,10 +3,10 @@
 import CustomBreadcrumb from "@/components/Breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useGetEvent from "@/hooks/api/admin/useGetEvent";
 import useGetUser from "@/hooks/api/users/useGetUser";
+import { useAppSelector } from "@/redux/hooks";
 import { appConfig } from "@/utils/config";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -16,7 +16,6 @@ import { FiMapPin } from "react-icons/fi";
 import { IoMdTime } from "react-icons/io";
 import { IoCalendarOutline } from "react-icons/io5";
 import TransactionForm from "./components/TransactionForm";
-import { useAppSelector } from "@/redux/hooks";
 
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -25,10 +24,6 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
   const { event, isLoading } = useGetEvent(Number(params.id));
   const { user } = useGetUser(Number(id));
 
-  console.log(id);
-  console.log(user?.user.Point?.totalPoints);
-  console.log(event?.Discount[0]?.limit);
-  console.log(user?.user.UserReward);
 
   const totalRewardValue =
     user?.user.UserReward?.reduce(
@@ -178,22 +173,18 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
           {/* BUy Button */}
           <div className=" lg:col-span-2">
             <div className="rounded-lg border p-4 shadow-md">
-              <div className="flex justify-center lg:sticky lg:top-5">
-                <div className=" w-full rounded-lg bg-blue-600 text-white shadow-md lg:w-[350px]">
-                  <Button
-                    variant="ghost"
-                    className="w-full lg:w-[350px]"
-                    disabled={isEventEnded}
-                  >
-                    {/* <TransactionForm
-                      availableSeat={event.limit}
-                      point={user?.user.Point?.totalPoints ?? 0}
-                      discount={event.Discount?.value}
-                      rewardValue={totalRewardValue}
-                      price={event.price}
-                    /> */}
-                  </Button>
-                </div>
+              <div className="flex justify-center  ">
+                <button className=" w-full rounded-lg py-2 text-white lg:w-[350px]">
+                  <TransactionForm
+                    discount={event.Discount[0].discountValue??0}
+                    rewardValue={
+                      user?.user.UserReward[0].reward.discountValue ?? 0
+                    }
+                    availableSeat={event.limit}
+                    price={event.price}
+                    point={user?.user.Point?.totalPoints ?? 0}
+                  />
+                </button>
               </div>
             </div>
           </div>

@@ -12,7 +12,6 @@ import {
 import useGetEvents from "@/hooks/api/admin/useGetEvents";
 import { useAppSelector } from "@/redux/hooks";
 import { appConfig } from "@/utils/config";
-import Image from "next/image";
 import { FC, useState } from "react";
 
 const Home: FC = () => {
@@ -30,67 +29,50 @@ const Home: FC = () => {
   console.log(id);
 
   // Filter for free events
-  const freeEvents = allEvents?.filter((event) => event.price === 0) || [];
+  const freeEvents =
+    allEvents?.filter((event) => event.category === "Concert") || [];
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-marine-100 px-4">
-      <h1 className="mb-4 mt-4 text-2xl font-bold md:mb-8 md:text-3xl"></h1>
-      <section className="mx-4 md:mx-10">
-        <div className="mb-6 grid h-56 w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-10 lg:grid-cols-1">
+      <section className="mx-4 mt-2 md:mx-10">
+        <div className="mb-6 grid h-56 w-full md:grid-cols-2 md:gap-10 lg:grid-cols-1">
           <Carousel>
-            <CarouselContent className="mx-4 w-full">
-              <CarouselItem className="md:basis pl-4  md:mx-auto">
-                <div className="rounded-lg bg-white p-4 shadow-lg md:p-6 ">
-                  <Image
-                    className="mx-auto rounded-lg object-cover object-center shadow-md "
-                    fill
-                    src="/img/concert.jpg"
-                    alt="event pic"
-                  />
+            <CarouselContent className="mx-2 w-full">
+              <CarouselItem className="md:basis  rounded-lg md:mx-auto">
+                <div className="top-2 flex h-[220px] mr-2 items-center justify-center rounded-lg bg-[url('/img/concert.avif')] bg-cover md:bg-contain shadow-lg md:h-[250px] md:w-full">
+                  <h1 className="text-lg text-white md:text-5xl"> CONCERT</h1>
                 </div>
               </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-2/3">
-                <div className="rounded-lg bg-white p-4 shadow-lg md:p-6">
-                  <Image
-                    className="mx-auto"
-                    width={220}
-                    height={200}
-                    src="/img/exibition.jpg"
-                    alt="event pic"
-                  />
+              <CarouselItem className="md:basis  md:mx-auto">
+                <div className="top-2 flex h-[220px] items-center justify-center rounded-lg bg-[url('/img/exhibite.jpg')] bg-cover md:bg-auto shadow-lg md:h-[250px]">
+                  <h1 className="text-lg text-white md:text-5xl">
+                    {" "}
+                    EXHIBITION
+                  </h1>
                 </div>
               </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-2/3">
-                <div className="rounded-lg bg-transparent p-4 shadow-lg md:p-6">
-                  <Image
-                    className="mx-auto rounded-lg object-cover object-center shadow-md"
-                    width={220}
-                    height={200}
-                    src="/img/festival.jpg"
-                    alt="event pic"
-                  />
+              <CarouselItem className="md:basis  md:mx-auto">
+                <div className="top-2 flex h-[220px] items-center justify-center rounded-lg bg-[url('/img/fitness.jpg')] bg-cover shadow-lg md:h-[250px]">
+                  <h1 className="text-lg text-white md:text-5xl">
+                    {" "}
+                    FITNESS
+                  </h1>
                 </div>
               </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-2/3">
-                <div className="rounded-lg bg-white p-4 shadow-lg md:p-6">
-                  <Image
-                    className="mx-auto"
-                    width={220}
-                    height={200}
-                    src="/"
-                    alt="event pic"
-                  />
+              <CarouselItem className="md:basis  md:mx-auto">
+                <div className="top-2 flex h-[220px] items-center justify-center rounded-lg bg-[url('/img/festival2.jpg')] bg-cover shadow-lg md:h-[250px]">
+                  <h1 className="text-lg text-white md:text-5xl">
+                    {" "}
+                    FESTIVAL
+                  </h1>
                 </div>
               </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-2/3">
-                <div className="rounded-lg bg-white p-4 shadow-lg md:p-6">
-                  <Image
-                    className="mx-auto"
-                    width={220}
-                    height={200}
-                    src="/"
-                    alt="event pic"
-                  />
+              <CarouselItem className="md:basis  md:mx-auto">
+                <div className="top-2 flex h-[220px] mr-2 items-center justify-center rounded-lg bg-[url('/img/workshop.jpg')] bg-cover shadow-lg md:h-[250px]">
+                  <h1 className="text-lg text-white md:text-5xl">
+                    {" "}
+                    WORKSHOP
+                  </h1>
                 </div>
               </CarouselItem>
             </CarouselContent>
@@ -104,9 +86,9 @@ const Home: FC = () => {
         <h1 className="mb-4 mt-5 text-left text-lg font-semibold md:mb-8 md:text-xl">
           Favorite Events
         </h1>
-        <div>
-          <Carousel>
-            <CarouselContent className="mt-4 grid w-full grid-cols-1 md:grid-cols-5">
+        <div className="items-center">
+          <Carousel className="">
+            <CarouselContent className="mt-4 flex flex-row gap-4  md:grid w-[350px] md:w-full md:gap-2 grid-cols-1 md:grid-cols-5">
               {freeEvents.map((event, index) => (
                 <CarouselItem key={index}>
                   <EventCard
@@ -129,7 +111,7 @@ const Home: FC = () => {
         <h1 className="mb-4 mt-5 text-left text-lg font-semibold md:mb-8 md:text-xl">
           Upcoming Events
         </h1>
-        <div className="mt-4 grid w-full grid-cols-1 gap-4 md:grid-cols-5">
+        <div className="mt-4 md:grid w-[350px] md:w-full gap-4 md:grid-cols-5">
           {paginatedEvents.map((event, index) => (
             <EventCard
               key={index}

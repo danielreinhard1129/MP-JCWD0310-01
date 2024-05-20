@@ -28,30 +28,50 @@ const TransactionForm: FC<TransactionFormProps> = ({
   discount,
   point,
   price,
-  rewardValue
+  rewardValue,
 }) => {
   const router = useRouter();
   const [ticketCount, setTicketCount] = useState(1);
   const [totalPayment, setTotalPayment] = useState(0);
+  const [isDiscountUsed, setIsDiscountUsed] = useState(false);
+  const [isRewardUsed, setIsRewardUsed] = useState(false);
   const [isPointUsed, setIsPointUsed] = useState(false);
 
   useEffect(() => {
     
     const ticketPrice = price; // Harga per tiket
     const totalPrice = ticketCount * ticketPrice;
-    
+
     let totalDiscount = 0;
-    let updatedPoint = point;
+
+    // Menggunakan diskon jika flag isDiscountUsed aktif
+    if (isDiscountUsed) {
+      totalDiscount += discount;
+    }
+
+    // Menggunakan nilai reward jika flag isRewardUsed aktif
+    if (isRewardUsed) {
+      totalDiscount += rewardValue;
+    }
+
+    // Menggunakan poin jika flag isPointUsed aktif
     if (isPointUsed) {
       totalDiscount += point;
-      updatedPoint = 0;
     }
     const total = Math.max(0, totalPrice - totalDiscount); // Pastikan total tidak negatif
     setTotalPayment(total);
-    
-    const totalPayment = total;
-  }, [ticketCount, point, price, isPointUsed]);
-  
+  }, [ticketCount, point, price, isPointUsed, isDiscountUsed, isRewardUsed]);
+
+  // Fungsi untuk mengubah nilai state isDiscountUsed menjadi true
+  const activateDiscount = () => {
+    setIsDiscountUsed(true);
+  };
+
+  // Fungsi untuk mengubah nilai state isRewardUsed menjadi true
+  const activateReward = () => {
+    setIsRewardUsed(true);
+  };
+
   // Fungsi untuk menangani pengurangan jumlah tiket
   const resetTicketCount = () => {
     setTicketCount(0);
@@ -111,28 +131,38 @@ const TransactionForm: FC<TransactionFormProps> = ({
                 Voucher:
               </label>
               <select
-                name="rewardpoind"
-                id="rewardpoind"
+                name="rewardpoint"
+                id="rewardpoint"
                 className="block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-marine-200 focus:outline-none"
+                onChange={(e) => {
+                  if (e.target.value === "voucher") {
+                    setIsDiscountUsed(true); // Aktifkan diskon jika voucher dipilih
+                  } else {
+                    setIsDiscountUsed(false); // Nonaktifkan diskon jika voucher tidak dipilih
+                  }
+                }}
               >
                 <option value="">Pilih Voucher</option>
                 <option value="voucher">{discount}</option>
-                <option value="reward2">5000</option>
-                <option value="reward3">8000</option>
               </select>
 
               <label htmlFor="reward" className="mb-2 block">
                 Reward:
               </label>
               <select
-                name="rewardpoind"
-                id="rewardpoind"
+                name="rewardpoint"
+                id="rewardpoint"
                 className="block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-marine-200 focus:outline-none"
+                onChange={(e) => {
+                  if (e.target.value === "reward1") {
+                    setIsRewardUsed(true); // Aktifkan reward jika reward dipilih
+                  } else {
+                    setIsRewardUsed(false); // Nonaktifkan reward jika reward tidak dipilih
+                  }
+                }}
               >
                 <option value="">Pilih Reward</option>
-                <option value="reward1">reward</option>
-                <option value="reward2">50000</option>
-                <option value="reward3">8000</option>
+                <option value="reward1">{rewardValue}</option>
               </select>
             </div>
 
@@ -141,9 +171,7 @@ const TransactionForm: FC<TransactionFormProps> = ({
                 Total:
               </label>
               <span className="text-2xl font-semibold">
-                {isPointUsed
-                  ? `IDR. ${totalPayment - point}`
-                  : `IDR. ${totalPayment}`}
+                {`IDR. ${totalPayment}`}
               </span>
             </div>
             <div className="mb-4 flex justify-between gap-4">
